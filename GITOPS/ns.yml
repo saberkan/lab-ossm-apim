@@ -1,0 +1,7 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: gitops-lab-ossm-apim
+  labels:
+    project: lab-ossm-apim
+spec: {}

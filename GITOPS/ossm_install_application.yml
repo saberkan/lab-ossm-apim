@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ossm-install
+  namespace: openshift-gitops
+  labels:
+    project: lab-ossm-apim
+spec:
+  destination:
+    name: in-cluster
+  project: default
+  source:
+    path: SERVICE_MESH/INSTALL
+    repoURL: 'https://github.com/saberkan/lab-ossm-apim.git'
