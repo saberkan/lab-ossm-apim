@@ -12,7 +12,7 @@ spec:
     - uri:
         exact: /
     rewrite:
-    uri: /productpage
+        uri: /productpage
     route:
     - destination:
         host: productpage
