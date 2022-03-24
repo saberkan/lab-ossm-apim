@@ -11,4 +11,5 @@ Follow SERVICE_MESH/README.md procedure
 - Deploy smcp 2
 - Deploy bookinfo (reviews v4) in smcp 2
 - Configure bookinfo with federation
+- nodeport ingress gateway ?
 - Install APIM with GitOps as application

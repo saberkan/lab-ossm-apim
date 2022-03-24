@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: bookinfo-gateway
+  namespace: smcp-1-lab-ossm-apim
+spec:
+  selector:
+    istio: ingressgateway # use istio default ingress gateway
+  servers:
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: bookinfocert # must be the same as secret
+    hosts:
+    - "productpage-smcp-1-lab-ossm-apim.apps.cluster-lnvxp.lnvxp.sandbox1169.opentlc.com"
