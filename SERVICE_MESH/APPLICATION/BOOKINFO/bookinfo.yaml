@@ -341,3 +341,38 @@ spec:
       - name: tmp
         emptyDir: {}
 ---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: productpage
+    app.kubernetes.io/instance: bookinfo
+    service: productpage
+  name: productpage
+spec:
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: productpage
+    weight: 100
+  wildcardPolicy: None
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: productpage
+    app.kubernetes.io/instance: bookinfo
+    service: productpage
+  name: productpage-secure
+spec:
+  port:
+    targetPort: http
+  tls:
+    insecureEdgeTerminationPolicy: Allow
+    termination: edge
+  to:
+    kind: Service
+    name: productpage
+    weight: 100

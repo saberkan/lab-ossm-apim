@@ -3,8 +3,12 @@
 https://github.com/siamaksade/openshift-gitops-getting-started
 </pre>
 
-# Install OSSM
+# Install OSSM with cluster argocd
 <pre>
+oc apply -f openshift_operators_redhat_ns.yml
+oc apply -f openshift_operators_ns.yml
+oc adm policy add-cluster-role-to-user cluster-admin -z openshift-gitops-argocd-application-controller -n openshift-gitops
+#TODO : Fix permission denied issue
 oc apply -f ossm_install_application.yml
 </pre>
 
