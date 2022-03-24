@@ -2,9 +2,11 @@
 
 Follow README.md in GITOPS
 
-2. Instanciate control planes (smcp)
+2. Instanciate control planes smcp 1
 <pre>
-//TODO
+oc new-project smcp-1-lab-ossm-apim
+oc label ns/smcp-1-lab-ossm-apim argocd.argoproj.io/managed-by=gitops-lab-ossm-apim
+oc apply -f GITOPS/smcp_1_application.yml
 </pre>
 
 3. Deploy application
@@ -22,4 +24,3 @@ oc new-project bookinfo-lab-ossm-apim
 oc label ns/bookinfo-lab-ossm-apim argocd.argoproj.io/managed-by=gitops-lab-ossm-apim
 oc apply -f GITOPS/bookinfo_application.yml
 </pre>
-

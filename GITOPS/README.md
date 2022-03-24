@@ -8,7 +8,6 @@ https://github.com/siamaksade/openshift-gitops-getting-started
 oc apply -f openshift_operators_redhat_ns.yml
 oc apply -f openshift_operators_ns.yml
 oc adm policy add-cluster-role-to-user cluster-admin -z openshift-gitops-argocd-application-controller -n openshift-gitops
-#TODO : Fix permission denied issue
 oc apply -f ossm_install_application.yml
 </pre>
 
@@ -22,5 +21,5 @@ oc extract secret/openshift-gitops-cluster  --to=-
 
 # Create project lab-ossm-apim
 <pre>
-oc apply -f projet.yml
+oc apply -f project.yml
 </pre>

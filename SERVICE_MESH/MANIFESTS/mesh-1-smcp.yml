@@ -1,8 +1,8 @@
 apiVersion: maistra.io/v2
 kind: ServiceMeshControlPlane
 metadata:
-  name: mesh-1-smcp
-  namespace: mesh-1-smcp
+  name: smcp
+  namespace: smcp-1-lab-ossm-apim
 spec:
   tracing:
     sampling: 10000

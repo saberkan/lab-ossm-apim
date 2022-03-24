@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: smcp-1
+  namespace: gitops-lab-ossm-apim
+  labels:
+    project: lab-ossm-apim
+spec:
+  destination:
+    name: in-cluster
+  project: lab-ossm-apim
+  source:
+    path: SERVICE_MESH/MANIFESTS
+    repoURL: 'https://github.com/saberkan/lab-ossm-apim.git'
