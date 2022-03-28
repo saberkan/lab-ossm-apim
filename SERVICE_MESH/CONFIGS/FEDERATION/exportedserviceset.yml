@@ -1,0 +1,14 @@
+apiVersion: federation.maistra.io/v1
+kind: ExportedServiceSet
+metadata:
+  name: mesh1
+  namespace: smcp-2-lab-ossm-apim
+spec:
+  exportRules:
+  - type: NameSelector
+    nameSelector:
+      namespace: bookinfo-db-lab-ossm-apim
+      name: ratings
+      alias:
+        namespace: bookinfo-db-lab-ossm-apim
+        name: ratings

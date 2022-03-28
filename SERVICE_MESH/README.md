@@ -69,3 +69,8 @@ MESH2_ADDRESS=mesh1-ingress.smcp-2-lab-ossm-apim.svc.cluster.local
 </pre>
 
 5.3 Enable federation
+<pre>
+
+</pre>
+
+6. Split traffic ratings between mesh 1 and mesh 2
