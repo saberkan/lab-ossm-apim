@@ -38,3 +38,10 @@ oc new-project bookinfo-db-lab-ossm-apim
 oc label ns/bookinfo-db-lab-ossm-apim argocd.argoproj.io/managed-by=gitops-lab-ossm-apim
 oc apply -f GITOPS/bookinfo_db_application.yml
 </pre>
+
+4. Deploy Mesh 2
+<pre>
+oc new-project smcp-2-lab-ossm-apim
+oc label ns/smcp-2-lab-ossm-apim argocd.argoproj.io/managed-by=gitops-lab-ossm-apim
+oc apply -f GITOPS/smcp_2_application.yml
+</pre>
