@@ -6,9 +6,9 @@ Follow GITOPS/README.md procedure
 Follow SERVICE_MESH/README.md procedure
 
 # TODO 
-- Access to external DB
+- Deploy rating with DB
 - Deploy smcp 2
-- Deploy bookinfo (reviews v4) in smcp 2
+- Deploy bookinfo (rating db) in smcp 2
 - Configure bookinfo with federation
 - filtre with policies
 - WASM

@@ -34,5 +34,7 @@ oc apply -f GITOPS/external_mysql_application.yml
 
 3.4 Deploy ratings with DB
 <pre>
-
+oc new-project bookinfo-db-lab-ossm-apim
+oc label ns/bookinfo-db-lab-ossm-apim argocd.argoproj.io/managed-by=gitops-lab-ossm-apim
+oc apply -f GITOPS/bookinfo_db_application.yml
 </pre>
