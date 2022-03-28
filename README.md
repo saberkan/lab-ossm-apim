@@ -5,7 +5,6 @@ Follow GITOPS/README.md procedure
 ## Install OSSM and application with GitOps
 Follow SERVICE_MESH/README.md procedure
 
-
 # TODO 
 - Access to external DB
 - Deploy smcp 2

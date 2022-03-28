@@ -24,3 +24,15 @@ oc new-project bookinfo-lab-ossm-apim
 oc label ns/bookinfo-lab-ossm-apim argocd.argoproj.io/managed-by=gitops-lab-ossm-apim
 oc apply -f GITOPS/bookinfo_application.yml
 </pre>
+
+3.3 Deploy mysql DB
+<pre>
+oc new-project external-lab-ossm-apim
+oc label ns/external-lab-ossm-apim argocd.argoproj.io/managed-by=gitops-lab-ossm-apim
+oc apply -f GITOPS/external_mysql_application.yml 
+</pre>
+
+3.4 Deploy ratings with DB
+<pre>
+
+</pre>

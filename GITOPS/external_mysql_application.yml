@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: external-mysql
+  namespace: gitops-lab-ossm-apim
+  labels:
+    project: lab-ossm-apim
+spec:
+  destination:
+    name: in-cluster
+    namespace: external-lab-ossm-apim
+  project: lab-ossm-apim
+  source:
+    path: SERVICE_MESH/APPLICATION/BOOKINFO/external
+    repoURL: 'https://github.com/saberkan/lab-ossm-apim.git'
