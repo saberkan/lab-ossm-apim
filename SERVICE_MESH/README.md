@@ -45,3 +45,27 @@ oc new-project smcp-2-lab-ossm-apim
 oc label ns/smcp-2-lab-ossm-apim argocd.argoproj.io/managed-by=gitops-lab-ossm-apim
 oc apply -f GITOPS/smcp_2_application.yml
 </pre>
+
+5. Deploy federation between smcp 1 and smcp 2
+
+5.0 Init vars
+<pre>
+MESH1_DISCOVERY_PORT="8188"
+MESH1_SERVICE_PORT="15443"
+MESH2_DISCOVERY_PORT="8188"
+MESH2_SERVICE_PORT="15443"
+</pre>
+
+5.1 Get root certificate
+<pre>
+MESH1_CERT=$(oc get configmap -n smcp-1-lab-ossm-apim istio-ca-root-cert -o jsonpath='{.data.root-cert\.pem}' | sed ':a;N;$!ba;s/\n/\\\n    /g')
+MESH2_CERT=$(oc get configmap -n smcp-2-lab-ossm-apim istio-ca-root-cert -o jsonpath='{.data.root-cert\.pem}' | sed ':a;N;$!ba;s/\n/\\\n    /g')
+</pre>
+
+5.2 Get ingress router 
+<pre>
+MESH1_ADDRESS=mesh2-ingress.smcp-1-lab-ossm-apim.svc.cluster.local
+MESH2_ADDRESS=mesh1-ingress.smcp-2-lab-ossm-apim.svc.cluster.local
+</pre>
+
+5.3 Enable federation
