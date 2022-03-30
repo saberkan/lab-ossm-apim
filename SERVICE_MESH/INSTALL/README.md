@@ -1,0 +1,1 @@
+Be carreful : operator version must exist in each subscription. Otherwise it won't install.

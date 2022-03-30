@@ -16,7 +16,8 @@ oc apply -f ossm_install_application.yml
 oc create -f ns.yml
 oc create -f argocd.yml
 # get admin password
-oc extract secret/openshift-gitops-cluster  --to=-
+oc extract secret/openshift-gitops-cluster  --to=- -n openshift-gitops
+oc extract secret/argocd-cluster  --to=- -n gitops-lab-ossm-apim
 </pre>
 
 # Create project lab-ossm-apim
