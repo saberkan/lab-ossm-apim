@@ -4,7 +4,10 @@ metadata:
   name: smcp-2
   namespace: smcp-2-lab-ossm-apim
 spec:
-  tracing:
+  proxy:
+    accessLogging:
+      file:
+        name: /dev/stdout
     sampling: 10000
     type: Jaeger
   policy:

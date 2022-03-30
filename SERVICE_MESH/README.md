@@ -78,9 +78,9 @@ sed "s:{{MESH2_CERT}}:$MESH2_CERT:g" CONFIGS/FEDERATION/configmap-export-templat
 
 sed "s:{{MESH1_CERT}}:$MESH1_CERT:g" CONFIGS/FEDERATION/configmap-import-template.yml | oc apply -f -
 
-sed -e "s:{{MESH2_ADDRESS}}:$MESH2_ADDRESS:g" -e "s:{{MESH2_DISCOVERY_PORT}}:$MESH2_DISCOVERY_PORT:g" -e "s:{{MESH2_SERVICE_PORT}}:$MESH2_SERVICE_PORT:g" CONFIGS/FEDERATION/servicemeshpeer-export-template.yml | oc apply -f -
+sed -e "s:{{MESH2_ADDRESS}}:$MESH2_ADDRESS:g" -e "s:{{MESH2_DISCOVERY_PORT}}:$MESH2_DISCOVERY_PORT:g" -e "s:{{MESH2_SERVICE_PORT}}:$MESH2_SERVICE_PORT:g" CONFIGS/FEDERATION/servicemeshpeer-import-template.yml | oc apply -f -
 
-sed -e "s:{{MESH1_ADDRESS}}:$MESH1_ADDRESS:g" -e "s:{{MESH1_DISCOVERY_PORT}}:$MESH1_DISCOVERY_PORT:g" -e "s:{{MESH1_SERVICE_PORT}}:$MESH1_SERVICE_PORT:g" CONFIGS/FEDERATION/servicemeshpeer-import-template.yml  | oc apply -f -
+sed -e "s:{{MESH1_ADDRESS}}:$MESH1_ADDRESS:g" -e "s:{{MESH1_DISCOVERY_PORT}}:$MESH1_DISCOVERY_PORT:g" -e "s:{{MESH1_SERVICE_PORT}}:$MESH1_SERVICE_PORT:g" CONFIGS/FEDERATION/servicemeshpeer-export-template.yml  | oc apply -f -
 
 oc apply -f CONFIGS/FEDERATION/exportedserviceset.yml 
 
