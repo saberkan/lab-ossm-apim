@@ -1,0 +1,16 @@
+kind: VirtualService
+apiVersion: networking.istio.io/v1alpha3
+metadata:
+  name: ratings-split
+  namespace: bookinfo-lab-ossm-apim
+spec:
+  hosts:
+    - ratings.bookinfo-lab-ossm-apim.svc.cluster.local
+  http:
+    - route:
+        - destination:
+            host: ratings.bookinfo-lab-ossm-apim.svc.cluster.local
+          weight: 50
+        - destination:
+            host: ratings.bookinfo-lab-ossm-apim.svc.mesh2-imports.local
+          weight: 50

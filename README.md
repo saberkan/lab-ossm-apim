@@ -5,11 +5,7 @@ Follow GITOPS/README.md procedure
 ## Install OSSM and application with GitOps
 Follow SERVICE_MESH/README.md procedure
 
-# TODO 
-- Deploy rating with DB
-- Deploy smcp 2
-- Deploy bookinfo (rating db) in smcp 2
-- Configure bookinfo with federation
+# TODO
 - filtre with policies
 - WASM
 - nodeport ingress gateway ?
