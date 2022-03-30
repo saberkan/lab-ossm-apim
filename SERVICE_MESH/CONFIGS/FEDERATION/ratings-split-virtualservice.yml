@@ -12,5 +12,6 @@ spec:
             host: ratings.bookinfo-lab-ossm-apim.svc.cluster.local
           weight: 50
         - destination:
-            host: ratings.bookinfo-lab-ossm-apim.svc.mesh2-imports.local
+            # if importAsLocal in importedServiceSet is true. Change mesh2-imports into local
+            host: ratings.bookinfo-db-lab-ossm-apim.svc.mesh2-imports.local
           weight: 50

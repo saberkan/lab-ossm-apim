@@ -1,16 +1,16 @@
 apiVersion: federation.maistra.io/v1
 kind: ImportedServiceSet
 metadata:
-  name: mesh2
+  name: mesh2 #the name replaces local in URL
   namespace: smcp-1-lab-ossm-apim
 spec:
   importRules:
     - type: NameSelector
       # Set to true to aggregate remote endpoint with local services.
       # When true, services will be imported as <name>.bookinfo-db-lab-ossm-apim.svc.cluster.local
-      importAsLocal: true
+      importAsLocal: false
       nameSelector:
         namespace: bookinfo-db-lab-ossm-apim
         alias:
-          # services will be imported as <name>.bookinfo-lab-ossm-apim.svc.mesh2-imports.local
-          namespace:    bookinfo-lab-ossm-apim
+          # services will be imported as <name>.bookinfo-db-lab-ossm-apim.svc.mesh2-imports.local
+          namespace: bookinfo-db-lab-ossm-apim
