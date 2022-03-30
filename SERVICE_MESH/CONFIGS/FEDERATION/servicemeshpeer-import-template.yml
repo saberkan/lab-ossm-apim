@@ -1,23 +1,23 @@
 apiVersion: federation.maistra.io/v1
 kind: ServiceMeshPeer
 metadata:
-  name: mesh1
-  namespace: smcp-2-lab-ossm-apim
+  name: mesh2
+  namespace: smcp-1-lab-ossm-apim
 spec:
   remote:
     addresses:
-    - {{MESH1_ADDRESS}}
-    discoveryPort: {{MESH1_DISCOVERY_PORT}}
-    servicePort: {{MESH1_SERVICE_PORT}}
+    - {{MESH2_ADDRESS}}
+    discoveryPort: {{MESH2_DISCOVERY_PORT}}
+    servicePort: {{MESH2_SERVICE_PORT}}
   gateways:
     ingress:
-      name: mesh1-ingress
+      name: mesh2-ingress
     egress:
-      name: mesh1-egress
+      name: mesh2-egress
   security:
-    trustDomain: mesh1.local
-    clientID: mesh1.local/ns/smcp-1-lab-ossm-apim/sa/mesh2-egress-service-account
+    trustDomain: mesh2.local
+    clientID: mesh2.local/ns/smcp-2-lab-ossm-apim/sa/mesh1-egress-service-account
     # same as default, if certificateChain is omitted
     certificateChain:
       kind: ConfigMap
-      name: mesh1-ca-root-cert
+      name: mesh2-ca-root-cert
