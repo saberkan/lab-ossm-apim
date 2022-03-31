@@ -1,7 +1,7 @@
 apiVersion: apps.3scale.net/v1alpha1
 kind: APIManager
 metadata:
-  name: example-apimanager
+  name: apimanager-lab-ossm-apim
 spec:
-  wildcardDomain: <wildcardDomain>
+  wildcardDomain: apps.cluster-gkflx.gkflx.sandbox1686.opentlc.com
   resourceRequirementsEnabled: true

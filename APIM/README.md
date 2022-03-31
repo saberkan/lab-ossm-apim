@@ -21,3 +21,16 @@ EOF
 oc apply -f GITOPS/apim_install_application.yml
 </pre>
 
+2. Deploy APIM
+
+2.1 Deploy APIM instance in GitOps
+<pre>
+oc apply -f GITOPS/apim_application.yml
+</pre>
+
+2.2 Get admin secrets
+<pre>
+oc get secret system-seed -o json | jq -r .data.ADMIN_USER | base64 -d
+oc get secret system-seed -o json | jq -r .data.ADMIN_PASSWORD | base64 -d
+</pre>
+
