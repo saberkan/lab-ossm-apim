@@ -1,6 +1,13 @@
 1. Install Service mesh
 
-Follow README.md in GITOPS
+<pre>
+# Follow README.md in GITOPS to prepare GITOPS first !
+# then install : 
+oc apply -f openshift_operators_redhat_ns.yml
+oc apply -f openshift_operators_ns.yml
+oc adm policy add-cluster-role-to-user cluster-admin -z openshift-gitops-argocd-application-controller -n openshift-gitops
+oc apply -f ossm_install_application.yml
+</pre>
 
 2. Instanciate control planes smcp 1
 <pre>
