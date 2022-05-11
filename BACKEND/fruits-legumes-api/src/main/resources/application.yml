@@ -1,0 +1,153 @@
+# Configuration file
+
+# Camel
+camel:
+  context:
+    name: fruits-legumes-api
+
+# Quarkus
+quarkus:
+  # Application name
+  application:
+    name: ${camel.context.name}
+  # Display the banner
+  banner:
+    enabled: true
+  # Eventually, the client should trust a self signed certificate presented by the API server
+  kubernetes-client:
+    trust-certs: true
+  # Enable native SSL support
+  ssl:
+    native: true
+  
+  ## HTTP server
+  http:
+    # If insecure (i.e. http rather than https) requests are allowed. If this is 'enabled'
+    # then http works as normal. 'redirect' will still open the http port, but
+    # all requests will be redirected to the HTTPS port. 'disabled' will prevent the HTTP
+    # port from opening at all. 
+    insecure-requests: ENABLED
+    # The HTTPS port
+    ssl-port: 8443
+    # SSL configuration
+    ssl:
+      # Configures the engine to require/request client authentication.
+      client-auth: REQUIRED
+      # Certificates
+      certificate:
+        key-store-file: /tmp/keystore.p12
+        key-store-password: P@ssw0rd
+        trust-store-file: /tmp/truststore.p12
+        trust-store-password: P@ssw0rd
+
+  ## Quarkus OpenShift extension configuration
+  openshift:
+    # The build config strategy to use
+    build-strategy: DOCKER
+    # The default Dockerfile to use for jvm builds
+    jvm-dockerfile: src/main/docker/Dockerfile.jvm
+    # The default Dockerfile to use for native builds
+    native-dockerfile: src/main/docker/Dockerfile.native
+    # Allows the HTTPS port to be included in the generated resources (DeploymentConfig and Service)
+    ports:
+      https:
+        container-port: ${quarkus.http.ssl-port}
+    # The number of desired pods
+    replicas: 2
+    # Expose OpenShift route
+    route:
+      expose: false
+    # CPU and Memory resources requirements when deployed on Kubernetes/OpenShift
+    resources:
+        requests:
+            cpu: 30m
+            memory: 256Mi
+        limits:
+            cpu: 500m
+            memory: 256Mi
+    # The type of service that will be generated for the application
+    service-type: ClusterIP
+    # Secrets to mount and where to mount them
+    secret-volumes:
+      keystore-volume:
+        secret-name: keystore-secret
+      truststore-volume:
+        secret-name: truststore-secret
+    mounts:
+      keystore-volume:
+        path: /mnt
+      truststore-volume:
+        path: /mnt
+
+  # OpenTelemetry configuration. This is leveraged by Camel Quarkus OpenTelemetry extension
+  # opentelemetry:
+  #   tracer:
+  #     exporter:
+  #       # The traces endpoint to the Jaeger Collector
+  #       jaeger:
+  #         endpoint: http://localhost:14268/api/traces
+
+  # OpenTracing configuration. This is leveraged by Camel Quarkus OpenTracing extension
+  jaeger:
+    # The service name
+    service-name: ${camel.context.name}
+    # The sampler type (const, probabilistic, ratelimiting or remote)
+    sampler-type: const
+    # The sampler parameter
+    sampler-param: 1
+    # The traces endpoint to the Collector
+    endpoint: http://localhost:14268/api/traces
+
+  ## Quarkus native build 
+  native:
+    # If all character sets should be added to the native image. This increases image size
+    add-all-charsets: true
+    # If this build should be done using a container runtime. 
+    # If this is set docker will be used by default, unless container-runtime is also set.
+    container-build: true
+    # A comma separated list of Ant-path style patterns to match resources
+    # that should be <strong>included</strong> in the native executable. By default,
+    # resources not selected by quarkus itself are ignored. Then, inclusion
+    # of additional resources could be triggered with
+    # <code>includePatterns</code>. When the inclusion patterns is too
+    # large, eviction of previously selected resources could be triggered
+    # with <code>excludePatterns</code>.
+    resources:
+        includes: openapi/*
+
+  ## Camel Quarkus
+  camel:
+    # Microprofile Camel Health checks
+    # Cf. https://camel.apache.org/camel-quarkus/latest/extensions/microprofile-health.html
+    health:
+      enabled: true
+
+    # Microprofile Camel Metrics
+    # Cf. https://camel.apache.org/camel-quarkus/latest/extensions/microprofile-metrics.html
+    metrics:
+      enable-route-policy: true
+      enable-message-history: false
+      enable-exchange-event-notifier: true
+      enable-route-event-notifier: true
+      enable-camel-context-event-notifier: true
+
+    # native mode configuration
+    native:
+      # A comma separated list of Ant-path style patterns to match class names
+      # that should be registered for reflection.
+      # Reference: https://camel.apache.org/camel-quarkus/latest/user-guide/native-mode.html#reflection
+      reflection:
+        include-patterns: java.lang.Exception
+
+# Only when running in prod profile
+"%prod":
+  quarkus:
+    # Quarkus kubernetes config extension
+    kubernetes-config:
+      # Enable to look up the configuration from the API server
+      enabled: true
+      secrets:
+        # Secrets (list of strings) to look for in the namespace that the Kubernetes Client has been configured for 
+        ~: fruits-legumes-api-secret
+        # Enable to generate the necessary role and corresponding role binding
+        enabled: true

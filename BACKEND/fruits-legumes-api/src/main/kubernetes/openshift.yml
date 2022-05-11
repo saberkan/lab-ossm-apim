@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: fruits-legumes-api-secret
+stringData:
+  quarkus.http.ssl.certificate.key-store-file: /mnt/keystore.p12
+  quarkus.http.ssl.certificate.key-store-password: P@ssw0rd
+  quarkus.http.ssl.certificate.trust-store-file: /mnt/truststore.p12
+  quarkus.http.ssl.certificate.trust-store-password: P@ssw0rd
+  quarkus.jaeger.endpoint: http://jaeger-all-in-one-inmemory-collector.3scale-amp.svc:14268/api/traces
+type: Opaque
