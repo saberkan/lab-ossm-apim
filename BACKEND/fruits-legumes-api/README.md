@@ -124,41 +124,44 @@ oc create secret generic truststore-secret \
 ```
 
 ## OpenTelemetry with Jaeger
-### If not already installed, install the Red Hat OpenShift distributed tracing platform (Jaeger) operator with an AllNamespaces scope
-# /!\ cluster-admin privileges are required
-```
-oc create --save-config -f - <<EOF
-apiVersion: operators.coreos.com/v1alpha1
-kind: Subscription
-metadata:
-    name: jaeger-product
-    namespace: openshift-operators
-spec:
-    channel: stable
-    installPlanApproval: Automatic
-    name: jaeger-product
-    source: redhat-operators
-    sourceNamespace: openshift-marketplace
-EOF
-```
 
-# Verify the successful installation of the Red Hat OpenShift distributed tracing platform operator
-watch oc get sub,csv
+1. If not already installed, install the Red Hat OpenShift distributed tracing platform (Jaeger) operator with an AllNamespaces scope.
+_**:warning: cluster-admin privileges are required**_
+    ```
+    oc create --save-config -f - <<EOF
+    apiVersion: operators.coreos.com/v1alpha1
+    kind: Subscription
+    metadata:
+        name: jaeger-product
+        namespace: openshift-operators
+    spec:
+        channel: stable
+        installPlanApproval: Automatic
+        name: jaeger-product
+        source: redhat-operators
+        sourceNamespace: openshift-marketplace
+    EOF
+    ```
 
-### Create the allInOne Jaeger instance in the dsna-pilot OpenShift project
-```
-oc apply -f - <<EOF
-apiVersion: jaegertracing.io/v1
-kind: Jaeger
-metadata:
-    name: jaeger-all-in-one-inmemory
-spec:
-    allInOne:
-        options:
-        log-level: info
-    strategy: allInOne
-EOF
-```
+2. Verify the successful installation of the Red Hat OpenShift distributed tracing platform operator
+    ```zsh
+    watch oc get sub,csv
+    ```
+
+3. Create the allInOne Jaeger instance in the dsna-pilot OpenShift project
+    ```zsh
+    oc apply -f - <<EOF
+    apiVersion: jaegertracing.io/v1
+    kind: Jaeger
+    metadata:
+        name: jaeger-all-in-one-inmemory
+    spec:
+        allInOne:
+            options:
+            log-level: info
+        strategy: allInOne
+    EOF
+    ```
 
 ## Related Guides
 
