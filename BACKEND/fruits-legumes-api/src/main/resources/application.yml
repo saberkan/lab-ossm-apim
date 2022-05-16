@@ -53,7 +53,7 @@ quarkus:
       https:
         container-port: ${quarkus.http.ssl-port}
     # The number of desired pods
-    replicas: 2
+    replicas: 1
     # Expose OpenShift route
     route:
       expose: false
@@ -75,9 +75,11 @@ quarkus:
         secret-name: truststore-secret
     mounts:
       keystore-volume:
-        path: /mnt
+        path: /mnt/keystore.p12
+        sub-path: keystore.p12
       truststore-volume:
-        path: /mnt
+        path: /mnt/truststore.p12
+        sub-path: truststore.p12
 
   # OpenTelemetry configuration. This is leveraged by Camel Quarkus OpenTelemetry extension
   # opentelemetry:

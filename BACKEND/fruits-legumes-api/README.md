@@ -6,11 +6,17 @@ If you want to learn more about Quarkus, please visit its website: https://quark
 
 ## Generate Java Keystores
 
-### Client key pair
-
+### Client key pair for upstream MTLS
 ```zsh
-# Generate a self-signed key pair
-$ openssl req -new -newkey rsa:4096 -x509 -keyout /tmp/apicast.key -out /tmp/apicast.crt -days 3650 -subj "/CN=apicast.svc"
+# Generate a self-signed key pair for APICAST MTLS
+$ openssl req -newkey rsa:4096 -x509 -nodes -days 3650 \
+-keyout /tmp/apicast.key -out /tmp/apicast.crt \
+-subj "/CN=apicast.svc"
+
+# Generate a self-signed key pair for API consumer
+$ openssl req -newkey rsa:4096 -x509 -nodes -days 3650 \
+-keyout /tmp/apiconsumer.key -out /tmp/apiconsumer.crt \
+-subj "/CN=apiconsumer.svc"
 ```
 
 ### Keystore with auto-signed key pair (private/public keys)
@@ -32,6 +38,8 @@ $ cp /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home/lib/sec
 $ keytool -storepasswd -keystore /tmp/truststore.p12 -storepass changeit -new 'P@ssw0rd'
 # Importing the client public certificate (client_cert) into the fruits-legumes-api truststore
 $ keytool -importcert -keystore /tmp/truststore.p12 -storepass 'P@ssw0rd' -file /tmp/apicast.crt -trustcacerts -noprompt
+$ keytool -importcert -keystore /tmp/truststore.p12 -storepass 'P@ssw0rd' -alias apicast-staging -file /tmp/apicast-staging.crt -trustcacerts -noprompt
+$ keytool -importcert -keystore /tmp/truststore.p12 -storepass 'P@ssw0rd' -alias apicast-production -file /tmp/apicast-production.crt -trustcacerts -noprompt
 ```
 
 ## Running the application in dev mode
