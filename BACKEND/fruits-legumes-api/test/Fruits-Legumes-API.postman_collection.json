@@ -82,7 +82,7 @@
 					}
 				],
 				"url": {
-					"raw": "https://fruits-legumes-api-apim-demo-tls-apicast-production.apps.cluster-dpfcr.dpfcr.sandbox1320.opentlc.com:443/legumes?user_key=1943f7ea9026a2b560380bf2b50ffc70",
+					"raw": "https://fruits-legumes-api-apim-demo-tls-apicast-production.apps.cluster-mz87t.mz87t.sandbox717.opentlc.com:443/legumes?user_key=1943f7ea9026a2b560380bf2b50ffc70",
 					"protocol": "https",
 					"host": [
 						"fruits-legumes-api-apim-demo-tls-apicast-production",
@@ -119,7 +119,7 @@
 					}
 				],
 				"url": {
-					"raw": "https://fruits-legumes-api-apim-demo-tls-apicast-production.apps.cluster-dpfcr.dpfcr.sandbox1320.opentlc.com:443/fruits?user_key=1943f7ea9026a2b560380bf2b50ffc70",
+					"raw": "https://fruits-legumes-api-apim-demo-tls-apicast-production.apps.cluster-mz87t.mz87t.sandbox717.opentlc.com:443/fruits?user_key=1943f7ea9026a2b560380bf2b50ffc70",
 					"protocol": "https",
 					"host": [
 						"fruits-legumes-api-apim-demo-tls-apicast-production",
@@ -165,7 +165,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://fruits-legumes-api-apim-demo-tls-apicast-production.apps.cluster-dpfcr.dpfcr.sandbox1320.opentlc.com:443/fruits?user_key=1943f7ea9026a2b560380bf2b50ffc70",
+					"raw": "https://fruits-legumes-api-apim-demo-tls-apicast-production.apps.cluster-mz87t.mz87t.sandbox717.opentlc.com:443/fruits?user_key=1943f7ea9026a2b560380bf2b50ffc70",
 					"protocol": "https",
 					"host": [
 						"fruits-legumes-api-apim-demo-tls-apicast-production",
