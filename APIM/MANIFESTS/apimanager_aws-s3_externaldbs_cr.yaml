@@ -1,0 +1,86 @@
+# Reference: https://github.com/3scale/3scale-operator/blob/3scale-2.10-stable-prod/doc/apimanager-reference.md
+apiVersion: apps.3scale.net/v1alpha1
+kind: APIManager
+metadata:
+  name: apimanager
+spec:
+  wildcardDomain: apps.cluster-8wk5n.8wk5n.sandbox1235.opentlc.com
+  appLabel: 3scale-api-management
+  tenantName: apim-demo
+  imagePullSecrets:
+    - name: threescale-registry-auth
+  # Resource requirements distabled for DEMO purposes
+  resourceRequirementsEnabled: false
+  apicast:
+    managementAPI: status
+    openSSLVerify: false
+    responseCodes: true
+    productionSpec:
+      replicas: 2
+      logLevel: info
+      # OpenTracing configuration
+      openTracing:
+        # Controls whether OpenTracing integration with APIcast is enabled - default: false
+        enabled: true
+        # Controls which OpenTracing library is loaded. At the moment the supported values are: jaeger. 
+        # If not set, jaeger will be used
+        tracingLibrary: jaeger
+        # Secret reference with the tracing library-specific configuration. 
+        # Each supported tracing library provides a default configuration file which is used if tracingConfigSecretRef 
+        # is not specified
+        tracingConfigSecretRef: 
+          name: threescale-production-jaeger-conf-secret
+    stagingSpec:
+      replicas: 1
+      logLevel: info
+      # OpenTracing configuration
+      openTracing:
+        # Controls whether OpenTracing integration with APIcast is enabled - default: false
+        enabled: true
+        # Controls which OpenTracing library is loaded. At the moment the supported values are: jaeger. 
+        # If not set, jaeger will be used
+        tracingLibrary: jaeger
+        # Secret reference with the tracing library-specific configuration. 
+        # Each supported tracing library provides a default configuration file which is used if tracingConfigSecretRef 
+        # is not specified
+        tracingConfigSecretRef: 
+          name: threescale-staging-jaeger-conf-secret
+  backend:
+    listenerSpec:
+      replicas: 2
+    workerSpec:
+      replicas: 2
+    cronSpec:
+      replicas: 1
+  system:
+    fileStorage:
+      # Use S3 as the System's file storage
+      simpleStorageService:
+        # Local object reference to the secret to be used where the AWS configuration is stored
+        configurationSecretRef:
+          name: 3scale-aws-s3-auth-secret
+    appSpec:
+      replicas: 2
+    sidekiqSpec:
+      replicas: 2
+  zync:
+    appSpec:
+      replicas: 1
+    queSpec:
+      replicas: 1
+  highAvailability:
+    # Enable to use external system database, backend redis, and system redis databases
+    enabled: true
+    # Enable to use external zync database. 
+    # The value of this field only takes effect when spec.highAvailability.enabled is set to true
+    externalZyncDatabaseEnabled: false
+  podDisruptionBudget:
+    # Enable to automatically create PodDisruptionBudgets for components that can scale. 
+    # Not including any of the databases or redis services.
+    enabled: true
+  monitoring:
+    # Enable to automatically create monitoring resources
+    enabled: true
+    # Activate/Disable PrometheusRules deployment
+    # Default: true
+    enablePrometheusRules: true

@@ -1,0 +1,233 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Camel Quarkus Fruits and Legumes API",
+        "version": "1.0.0",
+        "description": "A simple API to test the Apache Camel Quarkus Platform HTTP extension.",
+        "contact": {
+            "name": "Jean Nyilimbibi"
+        },
+        "license": {
+            "name": "MIT License",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://camel-quarkus-http-camel-quarkus-native.apps.jeannyil.sandbox1789.opentlc.com",
+            "description": "API Backend URL"
+        }
+    ],
+    "paths": {
+        "/fruits": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Fruit"
+                                    }
+                                },
+                                "examples": {
+                                    "fruits": {
+                                        "value": [
+                                            {
+                                                "name": "Apple",
+                                                "description": "Winter fruit"
+                                            },
+                                            {
+                                                "name": "Pineapple",
+                                                "description": "Tropical fruit"
+                                            },
+                                            {
+                                                "name": "Mango",
+                                                "description": "Tropical fruit"
+                                            },
+                                            {
+                                                "name": "Banana",
+                                                "description": "Tropical fruit"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Fruits found"
+                    }
+                },
+                "operationId": "getFruits",
+                "summary": "Returns a list of hard-coded and added fruits",
+                "description": "Returns a list of hard-coded and added fruits"
+            },
+            "post": {
+                "requestBody": {
+                    "description": "Fruit to add",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Fruit"
+                            },
+                            "examples": {
+                                "fruitToAdd": {
+                                    "value": {
+                                        "name": "Maracuja",
+                                        "description": "Tropical fruit :-)"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Fruit"
+                                    }
+                                },
+                                "examples": {
+                                    "newFruitsList": {
+                                        "value": [
+                                            {
+                                                "name": "Apple",
+                                                "description": "Winter fruit"
+                                            },
+                                            {
+                                                "name": "Pineapple",
+                                                "description": "Tropical fruit"
+                                            },
+                                            {
+                                                "name": "Mango",
+                                                "description": "Tropical fruit"
+                                            },
+                                            {
+                                                "name": "Banana",
+                                                "description": "Tropical fruit"
+                                            },
+                                            {
+                                                "name": "Maracuja",
+                                                "description": "Tropical fruit :-)"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Fruit added"
+                    }
+                },
+                "operationId": "addFruit",
+                "summary": "Adds a fruit",
+                "description": "Adds a fruit in the hard-coded list"
+            }
+        },
+        "/legumes": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Legume"
+                                    }
+                                },
+                                "examples": {
+                                    "legumesList": {
+                                        "value": [
+                                            {
+                                                "name": "Carrot",
+                                                "description": "Root vegetable, usually orange"
+                                            },
+                                            {
+                                                "name": "Zucchini",
+                                                "description": "Summer squash"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Legumes found"
+                    }
+                },
+                "operationId": "getLegumes",
+                "summary": "Returns a list of hard-coded legumes",
+                "description": "Returns a list of hard-coded legumes"
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Fruit": {
+                "title": "Root Type for Fruit",
+                "description": "Name and description for a fruit",
+                "required": [
+                    "description",
+                    "name"
+                ],
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "name": "Maracuja",
+                    "description": "Tropical fruit :-)"
+                }
+            },
+            "Legume": {
+                "title": "Root Type for Legume",
+                "description": "Name and description for a legume",
+                "required": [
+                    "description",
+                    "name"
+                ],
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "name": "Carrot",
+                    "description": "Root vegetable, usually orange"
+                }
+            }
+        },
+        "securitySchemes": {
+            "oauth2": {
+                "flows": {
+                    "clientCredentials": {
+                        "tokenUrl": "https://sso.apps.jeannyil.sandbox1789.opentlc.com/auth/realms/RH3scaleAdminPortal/protocol/openid-connect/token",
+                        "scopes": {
+                            "openid": "OpenID Connect Protocol"
+                        }
+                    }
+                },
+                "type": "oauth2"
+            }
+        }
+    },
+    "security": [
+        {
+            "oauth2": [
+            ]
+        }
+    ]
+}

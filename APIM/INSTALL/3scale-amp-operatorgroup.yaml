@@ -1,0 +1,8 @@
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: 3scale-lab-ossm-amp-operatorgroup
+  namespace: 3scale-lab-ossm-amp
+spec:
+  targetNamespaces:
+  - 3scale-lab-ossm-amp

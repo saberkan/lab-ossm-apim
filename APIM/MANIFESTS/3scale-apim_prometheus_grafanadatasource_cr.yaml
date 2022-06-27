@@ -1,0 +1,25 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDataSource
+metadata:
+  name: prometheus
+spec:
+  datasources:
+    - access: proxy
+      editable: true
+      secureJsonData:
+        httpHeaderValue1: >-
+          Bearer
+          eyJhbGciOiJSUzI1NiIsImtpZCI6InJtOURhcmNZa0ZXX3NfclJ1a01BSC1sTFFxVEZXWVhhM3lOOXBXemtJRVUifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiIzc2NhbGUtbGFiLW9zc20tYW1wIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImdyYWZhbmEtc2VydmljZWFjY291bnQtdG9rZW4tempqY3EiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZ3JhZmFuYS1zZXJ2aWNlYWNjb3VudCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6ImQ3MGM3MGIyLTU3YmQtNDcxYi1hZThmLWU2Y2EyMTIzODFhOCIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDozc2NhbGUtbGFiLW9zc20tYW1wOmdyYWZhbmEtc2VydmljZWFjY291bnQifQ.0RT9G_AIROJCjH01x4CSZI3newYwRf_QEuo_p5WoHl2UIp49jmKIqsEWiFi9BU54Mwi3pUVVsI2PN5kg049xpKCBL7rnYhFdEpkG3UyXGBOQApmhwsbCNhj3uuBoHAd9_0xzRuTu47vEUPfeEA2w4Nz1LInFPV-jbgdlNN5Myl9Tf-1tyOSN7je3AQYyt1i6OurdjGqfBHw8Yue7fmSQM864NxqB1_Zd3h-8GydYkZ_t7CUap6apzY1amWGfHEeoMUsY6M31P7AxQ70B2qBy1GNoLya3BeegBKfSPyAKmaG6CPWRMUmsBbLMndeBnAnIHLBeYnVs8DhcB433U9TKDx3L9e-I6i1351FYO3lHwYzoOiOkVg4L4V6IJ8bd9ij9S0peAMgfTGkBNjDHNOxpWH2tiAAz0KiQ-jaHL_tlq326xJALeeC1au4wdza_6UcUka8U8_T_hKSKz42sIi2lt5_Q3z1PHX_mnWMQAHyhVXiAk12qNT8jUa28ECFjt0EMqFaYrA6qGh9huMSIvwSFCDA_9a0jkm7aR8ltlEkYKUw9X3hZEC26SGmgyH75WDCfw8CpkqxGLKvsw7I5BBURMbLA70OdJ9EjiIbMRNxJlyw-pyPQQqUFOBQCRn2I97EkBEWUfsPwICU8-7VS8xlkj7gvF1h9x0l3WFQa3DGkxCY
+      name: Prometheus
+      url: >-
+        https://thanos-querier-openshift-monitoring.apps.cluster-8wk5n.8wk5n.sandbox1235.opentlc.com
+      jsonData:
+        httpHeaderName1: Authorization
+        timeInterval: 5s
+      isDefault: true
+      version: 1
+      type: prometheus
+  name: middleware
+status:
+  message: ''
+  phase: ''

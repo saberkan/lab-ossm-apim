@@ -1,0 +1,194 @@
+{
+	"info": {
+		"_postman_id": "67984594-5456-4eae-8adc-0de51e64c5d5",
+		"name": "Red Hat 3Scale APIM - Fruits & Legumes API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "getLegumes",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessTokenUrl",
+							"value": "https://sso.apps.cluster-pkcm5.pkcm5.sandbox487.opentlc.com/auth/realms/openshift-cluster/protocol/openid-connect/token",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "6af3dc0c",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "bba94d971e48c22de47e6e940159ec83",
+							"type": "string"
+						},
+						{
+							"key": "tokenName",
+							"value": "6af3dc0c",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "string"
+						},
+						{
+							"key": "authUrl",
+							"value": "https://sso.apps.cluster-ttb6w.ttb6w.sandbox817.opentlc.com/auth/realms/RH3scaleAdminPortal/protocol/openid-connect/auth",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "useBrowser",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "challengeAlgorithm",
+							"value": "S256",
+							"type": "string"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "https://oauth.pstmn.io/v1/callback",
+							"type": "string"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "bearer",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-3scale-debug",
+						"value": "6c63ce7d896a230fd88fcbc8aef28da6ee65d2591f3ee79c22a9c2b46ea4dd74",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://fruits-legumes-api-apim-demo-tls-apicast-production.apps.cluster-mz87t.mz87t.sandbox717.opentlc.com:443/legumes?user_key=1943f7ea9026a2b560380bf2b50ffc70",
+					"protocol": "https",
+					"host": [
+						"fruits-legumes-api-apim-demo-tls-apicast-production",
+						"apps",
+						"cluster-dpfcr",
+						"dpfcr",
+						"sandbox1320",
+						"opentlc",
+						"com"
+					],
+					"port": "443",
+					"path": [
+						"legumes"
+					],
+					"query": [
+						{
+							"key": "user_key",
+							"value": "1943f7ea9026a2b560380bf2b50ffc70"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getFruits",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-3scale-debug",
+						"value": "6c63ce7d896a230fd88fcbc8aef28da6ee65d2591f3ee79c22a9c2b46ea4dd74",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://fruits-legumes-api-apim-demo-tls-apicast-production.apps.cluster-mz87t.mz87t.sandbox717.opentlc.com:443/fruits?user_key=1943f7ea9026a2b560380bf2b50ffc70",
+					"protocol": "https",
+					"host": [
+						"fruits-legumes-api-apim-demo-tls-apicast-production",
+						"apps",
+						"cluster-dpfcr",
+						"dpfcr",
+						"sandbox1320",
+						"opentlc",
+						"com"
+					],
+					"port": "443",
+					"path": [
+						"fruits"
+					],
+					"query": [
+						{
+							"key": "user_key",
+							"value": "1943f7ea9026a2b560380bf2b50ffc70"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addFruit",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-3scale-debug",
+						"value": "6c63ce7d896a230fd88fcbc8aef28da6ee65d2591f3ee79c22a9c2b46ea4dd74",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Passion Fruit\",\n    \"description\": \"Tropical fruit\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fruits-legumes-api-apim-demo-tls-apicast-production.apps.cluster-mz87t.mz87t.sandbox717.opentlc.com:443/fruits?user_key=1943f7ea9026a2b560380bf2b50ffc70",
+					"protocol": "https",
+					"host": [
+						"fruits-legumes-api-apim-demo-tls-apicast-production",
+						"apps",
+						"cluster-dpfcr",
+						"dpfcr",
+						"sandbox1320",
+						"opentlc",
+						"com"
+					],
+					"port": "443",
+					"path": [
+						"fruits"
+					],
+					"query": [
+						{
+							"key": "user_key",
+							"value": "1943f7ea9026a2b560380bf2b50ffc70"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
