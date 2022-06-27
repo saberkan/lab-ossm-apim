@@ -103,25 +103,36 @@ If you want to learn more about building native executables, please consult http
 curl -k -vvv --cert /tmp/apicast.crt --key /tmp/apicast.key https://localhost:8443/fruits
 ```
 
-## Create secret containing the keystore
-
-```zsh
-oc create secret generic keystore-secret \
---from-file=keystore.p12=/tmp/keystore.p12
-```
-
-## Create secret containing the truststore
-
-```zsh
-oc create secret generic truststore-secret \
---from-file=truststore.p12=/tmp/truststore.p12
-```
-
 ## Deploy to OpenShift
 
-```zsh
-./mvnw clean package -Dquarkus.kubernetes.deploy=true
-```
+1. Login to the OpenShift cluster
+    ```zsh
+    oc login ...
+    ```
+
+2. Create an OpenShift project to host the service
+    ```zsh
+    oc new-project ceq-services --display-name="Red Hat CEQ Services"
+    ```
+
+3. Create secret containing the keystore
+
+    ```zsh
+    oc create secret generic keystore-secret \
+    --from-file=keystore.p12=/tmp/keystore.p12
+    ```
+
+4. Create secret containing the truststore
+
+    ```zsh
+    oc create secret generic truststore-secret \
+    --from-file=truststore.p12=/tmp/truststore.p12
+    ```
+
+5. Deploy the CEQ service
+    ```zsh
+    ./mvnw clean package -Dquarkus.kubernetes.deploy=true
+    ```
 
 ## OpenTelemetry with Jaeger
 
