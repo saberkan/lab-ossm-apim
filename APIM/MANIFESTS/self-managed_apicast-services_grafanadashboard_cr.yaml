@@ -1,0 +1,828 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    app: 3scale-api-management
+    monitoring-key: middleware
+    threescale_component: apicast
+  name: apicast-services
+spec:
+  json: |-
+    {
+        "annotations": {
+            "list": [
+            {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations & Alerts",
+                "type": "dashboard"
+            }
+            ]
+        },
+        "editable": true,
+        "gnetId": null,
+        "graphTooltip": 0,
+        "id": 8,
+        "iteration": 1644581804510,
+        "links": [],
+        "panels": [
+            {
+            "collapsed": false,
+            "datasource": null,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 0
+            },
+            "id": 20,
+            "panels": [],
+            "repeat": "service_id",
+            "scopedVars": {
+                "service_id": {
+                "selected": true,
+                "text": "3",
+                "value": "3"
+                }
+            },
+            "title": "$service_id - $service_name",
+            "type": "row"
+            },
+            {
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                "color": {
+                    "mode": "palette-classic"
+                },
+                "mappings": [],
+                "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                    {
+                        "color": "green",
+                        "value": null
+                    },
+                    {
+                        "color": "red",
+                        "value": 80
+                    }
+                    ]
+                },
+                "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 9,
+                "w": 12,
+                "x": 0,
+                "y": 1
+            },
+            "id": 65,
+            "options": {
+                "displayLabels": [],
+                "legend": {
+                "displayMode": "table",
+                "placement": "right",
+                "values": [
+                    "value",
+                    "percent"
+                ]
+                },
+                "pieType": "donut",
+                "reduceOptions": {
+                "calcs": [
+                    "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+                },
+                "text": {}
+            },
+            "pluginVersion": "7.5.11",
+            "scopedVars": {
+                "service_id": {
+                "selected": true,
+                "text": "3",
+                "value": "3"
+                }
+            },
+            "targets": [
+                {
+                "exemplar": true,
+                "expr": "upstream_status{namespace='$namespace', pod=~'apicast-.*$env.*', service_id='$service_id'}",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{status}}",
+                "refId": "A"
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "All Upstream HTTP status codes",
+            "type": "piechart"
+            },
+            {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {},
+                "overrides": []
+            },
+            "fill": 5,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 9,
+                "w": 12,
+                "x": 12,
+                "y": 1
+            },
+            "hiddenSeries": false,
+            "id": 63,
+            "legend": {
+                "avg": false,
+                "current": false,
+                "max": false,
+                "min": false,
+                "show": true,
+                "total": false,
+                "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "7.5.11",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "scopedVars": {
+                "service_id": {
+                "selected": true,
+                "text": "3",
+                "value": "3"
+                }
+            },
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                "expr": "histogram_quantile($percentile/100, sum(rate(total_response_time_seconds_bucket{namespace='$namespace', pod=~'apicast-.*$env.*', service_id='$service_id'}[1m])) by (le))",
+                "format": "time_series",
+                "intervalFactor": 1,
+                "legendFormat": "Total request time",
+                "refId": "A"
+                },
+                {
+                "expr": "histogram_quantile($percentile/100, sum(rate(upstream_response_time_seconds_bucket{namespace='$namespace', pod=~'apicast-.*$env.*', service_id='$service_id'}[1m])) by (le))",
+                "format": "time_series",
+                "intervalFactor": 1,
+                "legendFormat": "Upstream request time",
+                "refId": "B"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Total request time vs upstream request time (${percentile}th percentile)",
+            "tooltip": {
+                "shared": true,
+                "sort": 2,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                "decimals": null,
+                "format": "s",
+                "label": "",
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+                },
+                {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+            },
+            {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$datasource",
+            "fieldConfig": {
+                "defaults": {},
+                "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 9,
+                "w": 12,
+                "x": 0,
+                "y": 10
+            },
+            "hiddenSeries": false,
+            "id": 60,
+            "legend": {
+                "avg": false,
+                "current": false,
+                "max": false,
+                "min": false,
+                "show": true,
+                "total": false,
+                "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "7.5.11",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "scopedVars": {
+                "service_id": {
+                "selected": true,
+                "text": "3",
+                "value": "3"
+                }
+            },
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                "expr": "sum(rate(upstream_status{namespace='$namespace', pod=~'apicast-.*$env.*', service_id='$service_id'}[1m])) by (status)",
+                "format": "time_series",
+                "intervalFactor": 1,
+                "legendFormat": "{{status}}",
+                "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Upstream HTTP status codes (per second rate)",
+            "tooltip": {
+                "shared": true,
+                "sort": 2,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                "$$hashKey": "object:91",
+                "decimals": 0,
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+                },
+                {
+                "$$hashKey": "object:92",
+                "format": "reqps",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+            },
+            {
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                "color": {
+                    "mode": "palette-classic"
+                },
+                "custom": {
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "drawStyle": "line",
+                    "fillOpacity": 10,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                    "graph": false,
+                    "legend": false,
+                    "tooltip": false
+                    },
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                    "type": "linear"
+                    },
+                    "showPoints": "never",
+                    "spanNulls": true
+                },
+                "mappings": [],
+                "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                    {
+                        "color": "green",
+                        "value": null
+                    },
+                    {
+                        "color": "red",
+                        "value": 80
+                    }
+                    ]
+                },
+                "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 9,
+                "w": 12,
+                "x": 12,
+                "y": 10
+            },
+            "id": 67,
+            "options": {
+                "graph": {},
+                "legend": {
+                "calcs": [],
+                "displayMode": "list",
+                "placement": "bottom"
+                },
+                "tooltipOptions": {
+                "mode": "multi"
+                }
+            },
+            "pluginVersion": "7.5.11",
+            "scopedVars": {
+                "service_id": {
+                "selected": true,
+                "text": "3",
+                "value": "3"
+                }
+            },
+            "targets": [
+                {
+                "exemplar": true,
+                "expr": "sum(increase(upstream_status{namespace='$namespace', pod=~'apicast-.*$env.*', service_id='$service_id'}[5m])) by (status)",
+                "interval": "",
+                "legendFormat": "{{status}}",
+                "refId": "A"
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Upstream HTTP status codes (increase in the last 5mn)",
+            "type": "timeseries"
+            },
+            {
+            "cards": {
+                "cardPadding": null,
+                "cardRound": null
+            },
+            "color": {
+                "cardColor": "#73BF69",
+                "colorScale": "sqrt",
+                "colorScheme": "interpolateOranges",
+                "exponent": 0.5,
+                "mode": "opacity"
+            },
+            "dataFormat": "tsbuckets",
+            "datasource": "$datasource",
+            "fieldConfig": {
+                "defaults": {},
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 10,
+                "w": 12,
+                "x": 0,
+                "y": 19
+            },
+            "heatmap": {},
+            "hideZeroBuckets": false,
+            "highlightCards": true,
+            "id": 58,
+            "legend": {
+                "show": true
+            },
+            "links": [],
+            "reverseYBuckets": false,
+            "scopedVars": {
+                "service_id": {
+                "selected": true,
+                "text": "3",
+                "value": "3"
+                }
+            },
+            "targets": [
+                {
+                "expr": "sum(rate(total_response_time_seconds_bucket{namespace='$namespace', pod=~'apicast-.*$env-.*', service_id='$service_id'}[1m])) by (le)",
+                "format": "heatmap",
+                "instant": false,
+                "intervalFactor": 10,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Response time heatmap (by time bucket)",
+            "tooltip": {
+                "show": true,
+                "showHistogram": true
+            },
+            "type": "heatmap",
+            "xAxis": {
+                "show": true
+            },
+            "xBucketNumber": null,
+            "xBucketSize": null,
+            "yAxis": {
+                "decimals": 0,
+                "format": "s",
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true,
+                "splitFactor": null
+            },
+            "yBucketBound": "auto",
+            "yBucketNumber": null,
+            "yBucketSize": null
+            },
+            {
+            "cards": {
+                "cardPadding": null,
+                "cardRound": null
+            },
+            "color": {
+                "cardColor": "#FADE2A",
+                "colorScale": "sqrt",
+                "colorScheme": "interpolateOranges",
+                "exponent": 0.5,
+                "mode": "opacity"
+            },
+            "dataFormat": "tsbuckets",
+            "datasource": "$datasource",
+            "fieldConfig": {
+                "defaults": {},
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 10,
+                "w": 12,
+                "x": 12,
+                "y": 19
+            },
+            "heatmap": {},
+            "hideZeroBuckets": false,
+            "highlightCards": true,
+            "id": 61,
+            "legend": {
+                "show": true
+            },
+            "links": [],
+            "reverseYBuckets": false,
+            "scopedVars": {
+                "service_id": {
+                "selected": true,
+                "text": "3",
+                "value": "3"
+                }
+            },
+            "targets": [
+                {
+                "expr": "sum(rate(upstream_response_time_seconds_bucket{namespace='$namespace', pod=~'apicast-.*$env.*', service_id='$service_id'}[1m])) by (le)",
+                "format": "heatmap",
+                "intervalFactor": 10,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Upstream response time heatmap (by time bucket)",
+            "tooltip": {
+                "show": true,
+                "showHistogram": true
+            },
+            "type": "heatmap",
+            "xAxis": {
+                "show": true
+            },
+            "xBucketNumber": null,
+            "xBucketSize": null,
+            "yAxis": {
+                "decimals": 0,
+                "format": "s",
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true,
+                "splitFactor": null
+            },
+            "yBucketBound": "auto",
+            "yBucketNumber": null,
+            "yBucketSize": null
+            }
+        ],
+        "refresh": "10s",
+        "schemaVersion": 27,
+        "style": "dark",
+        "tags": [
+            "3scale",
+            "apicast"
+        ],
+        "templating": {
+            "list": [
+            {
+                "current": {
+                "selected": false,
+                "text": "Prometheus",
+                "value": "Prometheus"
+                },
+                "description": null,
+                "error": null,
+                "hide": 0,
+                "includeAll": false,
+                "label": null,
+                "multi": false,
+                "name": "datasource",
+                "options": [],
+                "query": "prometheus",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "type": "datasource"
+            },
+            {
+                "allValue": null,
+                "current": {
+                "tags": [],
+                "text": "3scale-lab-ossm-gw",
+                "value": "3scale-lab-ossm-gw"
+                },
+                "description": null,
+                "error": null,
+                "hide": 0,
+                "includeAll": false,
+                "label": "namespace",
+                "multi": false,
+                "name": "namespace",
+                "options": [
+                {
+                    "selected": true,
+                    "text": "3scale-lab-ossm-gw",
+                    "value": "3scale-lab-ossm-gw"
+                }
+                ],
+                "query": "3scale-lab-ossm-gw",
+                "skipUrlSync": false,
+                "type": "custom"
+            },
+            {
+                "allValue": null,
+                "current": {
+                "selected": false,
+                "tags": [],
+                "text": "production",
+                "value": "production"
+                },
+                "description": null,
+                "error": null,
+                "hide": 0,
+                "includeAll": false,
+                "label": "environment",
+                "multi": false,
+                "name": "env",
+                "options": [
+                {
+                    "selected": true,
+                    "text": "production",
+                    "value": "production"
+                },
+                {
+                    "selected": false,
+                    "text": "staging",
+                    "value": "staging"
+                }
+                ],
+                "query": "production,staging",
+                "queryValue": "",
+                "skipUrlSync": false,
+                "type": "custom"
+            },
+            {
+                "allValue": null,
+                "current": {
+                "selected": true,
+                "text": [
+                    "3"
+                ],
+                "value": [
+                    "3"
+                ]
+                },
+                "datasource": "$datasource",
+                "definition": "label_values(total_response_time_seconds_bucket{namespace='$namespace', pod=~'apicast-.*$env.*'}, service_id)",
+                "description": null,
+                "error": null,
+                "hide": 0,
+                "includeAll": false,
+                "label": "",
+                "multi": true,
+                "name": "service_id",
+                "options": [],
+                "query": {
+                "query": "label_values(total_response_time_seconds_bucket{namespace='$namespace', pod=~'apicast-.*$env.*'}, service_id)",
+                "refId": "Prometheus-service_id-Variable-Query"
+                },
+                "refresh": 2,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {
+                "selected": false,
+                "text": "bookinfo-api-product",
+                "value": "bookinfo-api-product"
+                },
+                "datasource": "$datasource",
+                "definition": "label_values(total_response_time_seconds_bucket{namespace='$namespace', pod=~'apicast-.*$env-.*', service_id='$service_id'}, service_system_name)",
+                "description": null,
+                "error": null,
+                "hide": 2,
+                "includeAll": false,
+                "label": "",
+                "multi": true,
+                "name": "service_name",
+                "options": [
+                {
+                    "selected": true,
+                    "text": "bookinfo-api-product",
+                    "value": "bookinfo-api-product"
+                }
+                ],
+                "query": {
+                "query": "label_values(total_response_time_seconds_bucket{namespace='$namespace', pod=~'apicast-.*$env-.*', service_id='$service_id'}, service_system_name)",
+                "refId": "Prometheus-service_name-Variable-Query"
+                },
+                "refresh": 0,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {
+                "tags": [],
+                "text": "95",
+                "value": "95"
+                },
+                "description": null,
+                "error": null,
+                "hide": 0,
+                "includeAll": false,
+                "label": null,
+                "multi": false,
+                "name": "percentile",
+                "options": [
+                {
+                    "selected": false,
+                    "text": "99",
+                    "value": "99"
+                },
+                {
+                    "selected": true,
+                    "text": "95",
+                    "value": "95"
+                },
+                {
+                    "selected": false,
+                    "text": "90",
+                    "value": "90"
+                },
+                {
+                    "selected": false,
+                    "text": "80",
+                    "value": "80"
+                },
+                {
+                    "selected": false,
+                    "text": "70",
+                    "value": "70"
+                },
+                {
+                    "selected": false,
+                    "text": "50",
+                    "value": "50"
+                }
+                ],
+                "query": "99, 95, 90, 80, 70, 50",
+                "queryValue": "",
+                "skipUrlSync": false,
+                "type": "custom"
+            }
+            ]
+        },
+        "time": {
+            "from": "now-3h",
+            "to": "now"
+        },
+        "timepicker": {
+            "refresh_intervals": [
+            "5s",
+            "10s",
+            "30s",
+            "1m",
+            "5m",
+            "15m",
+            "30m",
+            "1h",
+            "2h",
+            "1d"
+            ],
+            "time_options": [
+            "5m",
+            "15m",
+            "1h",
+            "6h",
+            "12h",
+            "24h",
+            "2d",
+            "7d",
+            "30d"
+            ]
+        },
+        "timezone": "",
+        "title": "3scale-lab-ossm-gw / 3scale / Apicast Services",
+        "uid": "316b8bb51662e66d801484ef47a2592adbea9837",
+        "version": 10
+    }
+  jsonnet: ''

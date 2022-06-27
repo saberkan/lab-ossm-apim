@@ -1,0 +1,56 @@
+# Reference: https://github.com/3scale/apicast-operator/blob/3scale-2.11-stable/doc/apicast-crd-reference.md
+apiVersion: apps.3scale.net/v1alpha1
+kind: APIcast
+metadata:
+  name: apim-demo-staging
+spec:
+  timezone: Europe/Paris
+  replicas: 1
+  adminPortalCredentialsRef:
+    name: apim-demo-staging-3scaleportal-secret
+  # exposedHost:
+  #   host: "3scale-staging-apicast.apps.jeannyil.sandbox1789.opentlc.com"
+  deploymentEnvironment: staging
+  configurationLoadMode: lazy
+  # Log level for the OpenResty logs
+  # Possible values: debug | info | notice | warn | error | crit | alert | emerg
+  logLevel: info
+  # OpenTracing configuration
+  openTracing:
+    # Controls whether OpenTracing integration with APIcast is enabled - default: false
+    enabled: true
+    # Controls which OpenTracing library is loaded. At the moment the supported values are: jaeger. 
+    # If not set, jaeger will be used
+    tracingLibrary: jaeger
+    # Secret reference with the tracing library-specific configuration. 
+    # Each supported tracing library provides a default configuration file which is used if tracingConfigSecretRef 
+    # is not specified
+    tracingConfigSecretRef: 
+      name: selfmanaged-staging-jaeger-conf-secret
+  # Allows to set the log level for the logs related to OpenID Connect integration 
+  # Possible values: debug | info | notice | warn | error | crit | alert | emerg
+  oidcLogLevel: error
+  pathRoutingEnabled: false
+  responseCodesIncluded: true
+  cacheConfigurationSeconds: 0
+  managementAPIScope: status
+  # Controls the OpenSSL Peer Verification
+  # Possible values: 
+  # - false (default): disable peer verification
+  # - true: enable peer verification
+  openSSLPeerVerificationEnabled: false
+  # Enables additional information on Prometheus metrics; 
+  # some labels will be used with specific information that will provide more in-depth details about APIcast.
+  # The metrics that will have extended information are:
+  # - total_response_time_seconds: labels service_id and service_system_name
+  # - upstream_response_time_seconds: labels service_id and service_system_name
+  # - upstream_status: labels service_id and service_system_name
+  extendedMetrics: true
+  # The values below reflect the defaults for managed staging APICast
+  resources:
+    requests:
+      memory: 64Mi
+      cpu: 50m
+    limits:
+      memory: 128Mi
+      cpu: 100m

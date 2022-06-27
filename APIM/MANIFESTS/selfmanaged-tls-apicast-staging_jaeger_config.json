@@ -1,0 +1,25 @@
+{
+    "service_name": "selfmanaged-tls-apicast-staging",
+    "disabled": false,
+    "sampler": {
+      "type": "const",
+      "param": 1
+    },
+    "reporter": {
+      "queueSize": 100,
+      "bufferFlushInterval": 10,
+      "logSpans": false,
+      "localAgentHostPort": "jaeger-all-in-one-inmemory-agent.3scale-lab-ossm-amp.svc:6831"
+    },
+    "headers": {
+      "jaegerDebugHeader": "debug-id",
+      "jaegerBaggageHeader": "baggage",
+      "TraceContextHeaderName": "uber-trace-id",
+      "traceBaggageHeaderPrefix": "testctx-"
+    },
+    "baggage_restrictions": {
+        "denyBaggageOnInitializationFailure": false,
+        "hostPort": "127.0.0.1:5778",
+        "refreshInterval": 60
+    }
+ }
