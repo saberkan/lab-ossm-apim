@@ -8,5 +8,5 @@ stringData:
   quarkus.http.ssl.certificate.key-store-password: P@ssw0rd
   quarkus.http.ssl.certificate.trust-store-file: /mnt/truststore.p12
   quarkus.http.ssl.certificate.trust-store-password: P@ssw0rd
-  quarkus.jaeger.endpoint: http://jaeger-all-in-one-inmemory-collector.3scale-amp.svc:14268/api/traces
+  quarkus.jaeger.endpoint: http://jaeger-all-in-one-inmemory-collector.3scale-amp3scale-lab-ossm-amp.svc:14268/api/traces
 type: Opaque
