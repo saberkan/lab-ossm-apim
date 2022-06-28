@@ -10,9 +10,9 @@ OCP_DOMAIN="cluster-8wk5n.8wk5n.sandbox1235.opentlc.com"
 ## OpenShift routes domain suffix
 OCP_WILDCARD_DOMAIN="apps.${OCP_DOMAIN}"
 ## Master API access token
-API_MASTER_ACCESS_TOKEN="2075e314a378c9f01232d92f113f359d671620ce1de00255c55cf19ce6f46d74"
+API_MASTER_ACCESS_TOKEN="<3SCALE MASTER ACCESS TOKEN>"
 ## Tenant API access token
-API_TENANT_ACCESS_TOKEN="88fb895da81b95270d3bc196b86edc211fa570fdec3d8f80581fa7fce4015512"
+API_TENANT_ACCESS_TOKEN="<3SCALE TENANT ACCESS TOKEN>"
 ## Name of the initial tenant
 TENANT_NAME="apim-demo"
 ## Password for the initial tenant admin account (admin)

@@ -8,7 +8,7 @@ OCP_DOMAIN="cluster-8wk5n.8wk5n.sandbox1235.opentlc.com"
 ## RHPDS OpenShift routes domain suffix
 OCP_WILDCARD_DOMAIN="apps.${OCP_DOMAIN}"
 ## Tenant API access token (rhpds-3scale-tenant)
-API_TENANT_ACCESS_TOKEN="88fb895da81b95270d3bc196b86edc211fa570fdec3d8f80581fa7fce4015512"
+API_TENANT_ACCESS_TOKEN="<3SCALE TENANT ACCESS TOKEN>"
 ## Name of the target tenant
 TENANT_NAME="apim-demo"
 # The tenant APICast uses the tenant route to communicate with the Red Hat 3scale AMP
