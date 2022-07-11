@@ -19,7 +19,18 @@ oc new-app postgresql-persistent --name="threescale-system-postgresql" \
 -p VOLUME_CAPACITY="10Gi" \
 -p POSTGRESQL_VERSION="13-el8"
 
-# Spin-up a persistent Redis instance for the 3scale system
+# Spin-up a persistent PostgreSQL instance for the 3scale zync component
+oc new-app postgresql-persistent --name="threescale-zync-postgresql" \
+-p MEMORY_LIMIT="512Mi" \
+-p DATABASE_SERVICE_NAME="threescale-zync-postgresql" \
+-p POSTGRESQL_USER="threescale-zync" \
+-p POSTGRESQL_PASSWORD="P!ssw0rd" \
+-p POSTGRESQL_DATABASE="zync_production" \
+-p VOLUME_CAPACITY="1Gi" \
+-p POSTGRESQL_VERSION="13-el8"
+
+# Spin-up a persistent Redis instance for the 3scale system.
+# Provides temporary storage for background jobs for 3scale and is also used as a message bus for Ruby processes of system-app pods.
 oc new-app redis-persistent --name="threescale-system-redis" \
 -p MEMORY_LIMIT="4Gi" \
 -p DATABASE_SERVICE_NAME="threescale-system-redis" \
@@ -27,7 +38,8 @@ oc new-app redis-persistent --name="threescale-system-redis" \
 -p VOLUME_CAPACITY="10Gi" \
 -p REDIS_VERSION="6-el8"
 
-# Spin-up a persistent Redis instance for the 3scale backend
+# Spin-up a persistent Redis instance for the 3scale backend.
+# Used for statistics storage and temporary job storage.
 oc new-app redis-persistent --name="threescale-backend-redis" \
 -p MEMORY_LIMIT="4Gi" \
 -p DATABASE_SERVICE_NAME="threescale-backend-redis" \
