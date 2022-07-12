@@ -82,7 +82,7 @@ oc create secret generic system-seed \
 #   -n $API_MANAGER_NS
 
 # Jaeger configuration secrets fot the managed APIcast
-# Reference: https://github.com/3scale/3scale-operator/blob/3scale-2.11-stable/doc/apimanager-reference.md#APIcastTracingConfigSecret
+# Reference: https://github.com/3scale/3scale-operator/blob/3scale-2.12.0-GA/doc/apimanager-reference.md#APIcastTracingConfigSecret
 oc create secret generic threescale-production-jaeger-conf-secret \
   --from-file=config=./MANIFESTS/threescale-apicast-production_jaeger_config.json \
   -n $API_MANAGER_NS
@@ -97,35 +97,41 @@ oc apply \
 
 # Create the '3scale-aws-s3-auth-secret' secret
 # References: 
-# - https://github.com/3scale/3scale-operator/blob/3scale-2.10-stable-prod/doc/apimanager-reference.md#fileStorage-S3-credentials-secret
+# - https://github.com/3scale/3scale-operator/blob/3scale-2.12.0-GA/doc/apimanager-reference.md#fileStorage-S3-credentials-secret
 # - https://access.redhat.com/documentation/en-us/red_hat_3scale_api_management/2.10/html/installing_3scale/install-threescale-on-openshift-guide#amazon_simple_storage_service_3scale_emphasis_filestorage_emphasis_installation
 oc create secret generic 3scale-aws-s3-auth-secret \
-  --from-literal=AWS_ACCESS_KEY_ID="<AWS ACCESS KEY>" \
-  --from-literal=AWS_SECRET_ACCESS_KEY="<AWS ACCESS SECRET>" \
+  --from-literal=AWS_ACCESS_KEY_ID="AKIAWKQYIAZE726XNJGQ" \
+  --from-literal=AWS_SECRET_ACCESS_KEY="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" \
   --from-literal=AWS_BUCKET="3scale-bucket" \
-  --from-literal=AWS_REGION="<AWS REGION>" \
+  --from-literal=AWS_REGION="eu-west-3" \
   -n $API_MANAGER_NS
 
 ## For external databases connections
 ## Reference: https://access.redhat.com/documentation/en-us/red_hat_3scale_api_management/2.11/html/installing_3scale/install-threescale-on-openshift-guide#external_databases_installation
 # Create the 'backend-redis' secret
-# Reference: https://github.com/3scale/3scale-operator/blob/3scale-2.11-stable/doc/apimanager-reference.md#backend-redis
+# Reference: https://github.com/3scale/3scale-operator/blob/3scale-2.12.0-GA/doc/apimanager-reference.md#backend-redis
 oc create secret generic backend-redis \
-  --from-literal=REDIS_STORAGE_URL="redis://:P!ssw0rd@threescale-backend-redis.3scale-lab-ossm-databases.svc:6379/0" \
-  --from-literal=REDIS_QUEUES_URL="redis://:P!ssw0rd@threescale-backend-redis.3scale-lab-ossm-databases.svc:6379/1" \
+  --from-literal=REDIS_STORAGE_URL="redis://:P!ssw0rd@threescale-backend-redis.3scale-databases.svc:6379/0" \
+  --from-literal=REDIS_QUEUES_URL="redis://:P!ssw0rd@threescale-backend-redis.3scale-databases.svc:6379/1" \
   -n $API_MANAGER_NS
 
 # Create the 'system-redis' secret
-# Reference: https://github.com/3scale/3scale-operator/blob/3scale-2.11-stable/doc/apimanager-reference.md#system-redis
+# Reference: https://github.com/3scale/3scale-operator/blob/3scale-2.12.0-GA/doc/apimanager-reference.md#system-redis
 oc create secret generic system-redis \
-  --from-literal=URL="redis://:P!ssw0rd@threescale-system-redis.3scale-lab-ossm-databases.svc:6379/1" \
-  --from-literal=MESSAGE_BUS_URL="redis://:P!ssw0rd@threescale-system-redis.3scale-lab-ossm-databases.svc:6379/8" \
+  --from-literal=URL="redis://:P!ssw0rd@threescale-system-redis.3scale-databases.svc:6379/1" \
   -n $API_MANAGER_NS
 
 # Create the 'system-database' secret (PostgreSQL DB)
-# Reference: https://github.com/3scale/3scale-operator/blob/3scale-2.11-stable/doc/apimanager-reference.md#system-database
+# Reference: https://github.com/3scale/3scale-operator/blob/3scale-2.12.0-GA/doc/apimanager-reference.md#system-database
 oc create secret generic system-database \
-  --from-literal=URL="postgresql://threescale-system:P!ssw0rd@threescale-system-postgresql.3scale-lab-ossm-databases.svc:5432/threescaledb" \
+  --from-literal=URL="postgresql://threescale-system:P!ssw0rd@threescale-system-postgresql.3scale-databases.svc:5432/threescaledb" \
+  -n $API_MANAGER_NS
+
+# Create the 'zync' secret (PostgreSQL DB)
+# Reference: https://github.com/3scale/3scale-operator/blob/3scale-2.12.0-GA/doc/apimanager-reference.md#zync
+oc create secret generic zync \
+  --from-literal=DATABASE_URL="postgresql://threescale-zync:P!ssw0rd@threescale-zync-postgresql.3scale-databases.svc:5432/zync_production" \
+  --from-literal=ZYNC_DATABASE_PASSWORD="P!ssw0rd" \
   -n $API_MANAGER_NS
 
 # Deploy the Red Hat 3scale API Management Platform
