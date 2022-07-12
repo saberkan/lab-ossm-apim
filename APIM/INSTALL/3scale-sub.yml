@@ -4,9 +4,8 @@ metadata:
   name: 3scale-operator
   namespace: 3scale-lab-ossm-apim
 spec:
-  channel: threescale-2.11
+  channel: threescale-2.12
   installPlanApproval: Automatic
   name: 3scale-operator
   source: redhat-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: 3scale-operator.v0.8.3-0.1646742992.p

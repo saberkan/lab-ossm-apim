@@ -1,11 +1,11 @@
-# Reference: https://github.com/3scale/apicast-operator/blob/3scale-2.11-stable/doc/apicast-crd-reference.md
+# Reference: https://github.com/3scale/apicast-operator/blob/3scale-2.12.0-GA/doc/apicast-crd-reference.md
 apiVersion: apps.3scale.net/v1alpha1
 kind: APIcast
 metadata:
   name: apim-demo-production
 spec:
   timezone: Europe/Paris
-  replicas: 2
+  replicas: 3
   adminPortalCredentialsRef:
     name: apim-demo-production-3scaleportal-secret
   # exposedHost:
