@@ -47,4 +47,10 @@ oc new-app redis-persistent --name="threescale-backend-redis" \
 -p VOLUME_CAPACITY="10Gi" \
 -p REDIS_VERSION="6-el8"
 
+# Group databases
+oc label --overwrite dc threescale-system-postgresql app.kubernetes.io/part-of=postgreSQL
+oc label --overwrite dc threescale-zync-postgresql app.kubernetes.io/part-of=postgreSQL
+oc label --overwrite dc threescale-backend-redis app.kubernetes.io/part-of=redis
+oc label --overwrite dc threescale-system-redis app.kubernetes.io/part-of=redis
+
 watch oc get po
