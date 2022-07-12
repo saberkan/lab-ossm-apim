@@ -7,8 +7,6 @@ spec:
   wildcardDomain: apps.cluster-b98jt.b98jt.sandbox88.opentlc.com
   appLabel: 3scale-api-management
   tenantName: apim-demo
-  imagePullSecrets:
-    - name: threescale-registry-auth
   # Resource requirements distabled for DEMO purposes
   resourceRequirementsEnabled: false
   apicast:
