@@ -36,13 +36,18 @@ watch oc get sub,csv,installPlan
 oc apply -f ./MANIFESTS/grafana_cr.yaml -n $APICAST_NS
 
 # Jaeger configuration secret fot the self-managed APIcast
-# Reference: https://github.com/3scale/apicast-operator/blob/3scale-2.11-stable/doc/apicast-crd-reference.md#TracingConfigSecret
+# Reference: https://github.com/3scale/apicast-operator/blob/3scale-2.12.0-GA/doc/apicast-crd-reference.md#TracingConfigSecret
 oc create secret generic selfmanaged-tls-production-jaeger-secret \
   --from-file=config=./MANIFESTS/selfmanaged-tls-apicast-production_jaeger_config.json \
   -n $APICAST_NS
 oc create secret generic selfmanaged-tls-staging-jaeger-secret \
   --from-file=config=./MANIFESTS/selfmanaged-tls-apicast-staging_jaeger_config.json \
   -n $APICAST_NS
+
+# Allow the APIcast operator to watch for secrets changes
+# Reference: https://github.com/3scale/apicast-operator/blob/3scale-2.12.0-GA/doc/apicast-crd-reference.md
+oc label --overwrite secret selfmanaged-tls-production-jaeger-secret apicast.apps.3scale.net/watched-by=apicast
+oc label --overwrite secret selfmanaged-tls-staging-jaeger-secret apicast.apps.3scale.net/watched-by=apicast
 
 # Create secrets that allows APIcasts to communicate with 3scale. 
 ## Secrets that contain 3scale System Admin Portal endpoint information for the ${TENANT_NAME}
@@ -97,6 +102,13 @@ oc apply -f ./MANIFESTS/apim-demo-tenant-tls-apicast-staging_cr.yaml -n $APICAST
 
 # Create API gateway production related resources in OpenShift for the ${TENANT_NAME}
 oc apply -f ./MANIFESTS/apim-demo-tenant-tls-apicast-prod_cr.yaml -n $APICAST_NS
+
+# Watch the pods being created
+watch oc get po -n $APICAST_NS
+
+# Assemble under the TLS-APIcast application group
+oc label --overwrite deploy apicast-apim-demo-tls-production app.kubernetes.io/part-of=TLS-APIcast
+oc label --overwrite deploy apicast-apim-demo-tls-staging app.kubernetes.io/part-of=TLS-APIcast
 
 # Install PodMonitor to scrap prometheus metrics from the apicast pods
 oc apply -n $APICAST_NS -f - <<EOF

@@ -39,13 +39,18 @@ oc apply -f ./MANIFESTS/grafana_cr.yaml -n $APICAST_NS
 ### Reference: https://access.redhat.com/documentation/en-us/red_hat_3scale_api_management/2.8/html-single/installing_3scale/index#providing-3cale-porta-endpoint 
 
 # Jaeger configuration secret fot the self-managed APIcast
-# Reference: https://github.com/3scale/apicast-operator/blob/3scale-2.11-stable/doc/apicast-crd-reference.md#TracingConfigSecret
+# Reference: https://github.com/3scale/apicast-operator/blob/3scale-2.12.0-GA/doc/apicast-crd-reference.md#TracingConfigSecret
 oc create secret generic selfmanaged-production-jaeger-conf-secret \
   --from-file=config=./MANIFESTS/selfmanaged-apicast-production_jaeger_config.json \
   -n $APICAST_NS
 oc create secret generic selfmanaged-staging-jaeger-conf-secret \
   --from-file=config=./MANIFESTS/selfmanaged-apicast-staging_jaeger_config.json \
   -n $APICAST_NS
+
+# Allow the APIcast operator to watch for secrets changes
+# Reference: https://github.com/3scale/apicast-operator/blob/3scale-2.12.0-GA/doc/apicast-crd-reference.md
+oc label --overwrite secret selfmanaged-production-jaeger-conf-secret apicast.apps.3scale.net/watched-by=apicast
+oc label --overwrite secret selfmanaged-staging-jaeger-conf-secret apicast.apps.3scale.net/watched-by=apicast
 
 # Create secrets that allows APIcasts to communicate with 3scale. 
 
@@ -68,6 +73,10 @@ oc apply -f ./MANIFESTS/apim-demo-tenant-apicast-prod_cr.yaml -n $APICAST_NS
 
 # Watch the pods being created
 watch oc get po -n $APICAST_NS
+
+# Assemble under the Standard-APIcast application group
+oc label --overwrite deploy apicast-apim-demo-production app.kubernetes.io/part-of=Standard-APIcast
+oc label --overwrite deploy apicast-apim-demo-staging app.kubernetes.io/part-of=Standard-APIcast
 
 # Install PodMonitor to scrap prometheus metrics from the apicast pods
 oc apply -n $APICAST_NS -f - <<EOF

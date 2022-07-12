@@ -4,7 +4,7 @@ metadata:
   name: apicast-operator
   namespace: 3scale-lab-ossm-gw
 spec:
-  channel: threescale-2.11
+  channel: threescale-2.12
   installPlanApproval: Automatic
   name: apicast-operator
   source: redhat-operators
