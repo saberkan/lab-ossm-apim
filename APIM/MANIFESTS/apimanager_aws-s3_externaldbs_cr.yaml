@@ -1,10 +1,10 @@
-# Reference: https://github.com/3scale/3scale-operator/blob/3scale-2.10-stable-prod/doc/apimanager-reference.md
+# Reference: https://github.com/3scale/3scale-operator/blob/3scale-2.12.0-GA/doc/apimanager-reference.md
 apiVersion: apps.3scale.net/v1alpha1
 kind: APIManager
 metadata:
   name: apimanager
 spec:
-  wildcardDomain: apps.cluster-8wk5n.8wk5n.sandbox1235.opentlc.com
+  wildcardDomain: apps.cluster-b98jt.b98jt.sandbox88.opentlc.com
   appLabel: 3scale-api-management
   tenantName: apim-demo
   imagePullSecrets:
@@ -16,7 +16,7 @@ spec:
     openSSLVerify: false
     responseCodes: true
     productionSpec:
-      replicas: 2
+      replicas: 3
       logLevel: info
       # OpenTracing configuration
       openTracing:
@@ -30,6 +30,30 @@ spec:
         # is not specified
         tracingConfigSecretRef: 
           name: threescale-production-jaeger-conf-secret
+      # Configures anti-affinity strategies that guarantee the Production APIcast availability.
+      # Here: prefers multiple zones when scheduling pods but schedules the Production APIcast replica pods on 
+      # different OpenShift nodes if it is not possible to schedule across zones 
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app: 3scale-api-management
+                  deploymentConfig: apicast-production
+                  threescale_component: apicast
+                  threescale_component_element: production
+              topologyKey: "topology.kubernetes.io/zone"
+          - weight: 90
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app: 3scale-api-management
+                  deploymentConfig: apicast-production
+                  threescale_component: apicast
+                  threescale_component_element: production
+              topologyKey: "kubernetes.io/hostname"
     stagingSpec:
       replicas: 1
       logLevel: info
@@ -47,9 +71,57 @@ spec:
           name: threescale-staging-jaeger-conf-secret
   backend:
     listenerSpec:
-      replicas: 2
+      replicas: 3
+      # Configures anti-affinity strategies that guarantee the Backend Listener availability.
+      # Here: prefers multiple zones when scheduling pods but schedules the Backend Listener replica pods on 
+      # different OpenShift nodes if it is not possible to schedule across zones 
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app: 3scale-api-management
+                  deploymentConfig: backend-listener
+                  threescale_component: backend
+                  threescale_component_element: listener
+              topologyKey: "topology.kubernetes.io/zone"
+          - weight: 90
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app: 3scale-api-management
+                  deploymentConfig: backend-listener
+                  threescale_component: backend
+                  threescale_component_element: listener
+              topologyKey: "kubernetes.io/hostname"
     workerSpec:
-      replicas: 2
+      replicas: 3
+      # Configures anti-affinity strategies that guarantee the Backend Worker availability.
+      # Here: prefers multiple zones when scheduling pods but schedules the Backend Worker replica pods on 
+      # different OpenShift nodes if it is not possible to schedule across zones 
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app: 3scale-api-management
+                  deploymentConfig: backend-worker
+                  threescale_component: backend
+                  threescale_component_element: worker
+              topologyKey: "topology.kubernetes.io/zone"
+          - weight: 90
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app: 3scale-api-management
+                  deploymentConfig: backend-worker
+                  threescale_component: backend
+                  threescale_component_element: worker
+              topologyKey: "kubernetes.io/hostname"
     cronSpec:
       replicas: 1
   system:
@@ -68,12 +140,20 @@ spec:
       replicas: 1
     queSpec:
       replicas: 1
-  highAvailability:
-    # Enable to use external system database, backend redis, and system redis databases
-    enabled: true
-    # Enable to use external zync database. 
-    # The value of this field only takes effect when spec.highAvailability.enabled is set to true
-    externalZyncDatabaseEnabled: false
+  # /!\ External databases mode expects to have pre-created secrets with the desired database URL.
+  externalComponents:
+    backend:
+      redis: true
+    system:
+      database: true
+      redis: true
+    zync:
+      database: true
+    # # Enable to use external system database, backend redis, and system redis databases
+    # enabled: true
+    # # Enable to use external zync database. 
+    # # The value of this field only takes effect when spec.highAvailability.enabled is set to true
+    # externalZyncDatabaseEnabled: false
   podDisruptionBudget:
     # Enable to automatically create PodDisruptionBudgets for components that can scale. 
     # Not including any of the databases or redis services.
