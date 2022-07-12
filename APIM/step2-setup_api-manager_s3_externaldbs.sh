@@ -100,10 +100,10 @@ oc apply \
 # - https://github.com/3scale/3scale-operator/blob/3scale-2.12.0-GA/doc/apimanager-reference.md#fileStorage-S3-credentials-secret
 # - https://access.redhat.com/documentation/en-us/red_hat_3scale_api_management/2.10/html/installing_3scale/install-threescale-on-openshift-guide#amazon_simple_storage_service_3scale_emphasis_filestorage_emphasis_installation
 oc create secret generic 3scale-aws-s3-auth-secret \
-  --from-literal=AWS_ACCESS_KEY_ID="***REMOVED***" \
-  --from-literal=AWS_SECRET_ACCESS_KEY="***REMOVED***" \
+  --from-literal=AWS_ACCESS_KEY_ID="<AWS_ACCESS_KEY_ID>" \
+  --from-literal=AWS_SECRET_ACCESS_KEY="<AWS_SECRET_ACCESS_KEY>" \
   --from-literal=AWS_BUCKET="3scale-bucket" \
-  --from-literal=AWS_REGION="eu-west-3" \
+  --from-literal=AWS_REGION="<AWS_REGION>" \
   -n $API_MANAGER_NS
 
 ## For external databases connections
