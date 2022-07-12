@@ -9,12 +9,12 @@ If you want to learn more about Quarkus, please visit its website: https://quark
 ### Client key pair for upstream MTLS
 ```zsh
 # Generate a self-signed key pair for APICAST MTLS
-$ openssl req -newkey rsa:4096 -x509 -nodes -days 3650 \
+openssl req -newkey rsa:4096 -x509 -nodes -days 3650 \
 -keyout /tmp/apicast.key -out /tmp/apicast.crt \
 -subj "/CN=apicast.svc"
 
 # Generate a self-signed key pair for API consumer
-$ openssl req -newkey rsa:4096 -x509 -nodes -days 3650 \
+openssl req -newkey rsa:4096 -x509 -nodes -days 3650 \
 -keyout /tmp/apiconsumer.key -out /tmp/apiconsumer.crt \
 -subj "/CN=apiconsumer.svc"
 ```
@@ -22,24 +22,24 @@ $ openssl req -newkey rsa:4096 -x509 -nodes -days 3650 \
 ### Keystore with auto-signed key pair (private/public keys)
 ```zsh
 #  Generating fruits-legumes-api client auto-signed key pair (private and public) keystore
-$ keytool -genkey -keypass 'P@ssw0rd' -storepass 'P@ssw0rd' -alias fruits-legumes-api -keyalg RSA \
+keytool -genkey -keypass 'P@ssw0rd' -storepass 'P@ssw0rd' -alias fruits-legumes-api -keyalg RSA \
 -dname 'CN=fruits-legumes-api' \
 -validity 3600 -keystore /tmp/keystore.p12 -v \
 -ext san=DNS:fruits-legumes-api.svc,DNS:fruits-legumes-api.svc.cluster.local,DNS:fruits-legumes-api.camel-quarkus.svc,DNS:fruits-legumes-api.camel-quarkus.svc.cluster.local
 # Exporting fruits-legumes-api public auto-signed certificate (api_cert)
-$ keytool -export -alias fruits-legumes-api -keystore /tmp/keystore.p12 -file /tmp/fruits-legumes-api_cert -storepass 'P@ssw0rd' -v
+keytool -export -alias fruits-legumes-api -keystore /tmp/keystore.p12 -file /tmp/fruits-legumes-api_cert -storepass 'P@ssw0rd' -v
 ```
 
 ### Truststore
 
 ```zsh
 # Use the Java cacerts as the basis for the truststore
-$ cp /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home/lib/security/cacerts /tmp/truststore.p12
-$ keytool -storepasswd -keystore /tmp/truststore.p12 -storepass changeit -new 'P@ssw0rd'
+cp /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home/lib/security/cacerts /tmp/truststore.p12
+keytool -storepasswd -keystore /tmp/truststore.p12 -storepass changeit -new 'P@ssw0rd'
 # Importing the client public certificate (client_cert) into the fruits-legumes-api truststore
-$ keytool -importcert -keystore /tmp/truststore.p12 -storepass 'P@ssw0rd' -file /tmp/apicast.crt -trustcacerts -noprompt
-$ keytool -importcert -keystore /tmp/truststore.p12 -storepass 'P@ssw0rd' -alias apicast-staging -file /tmp/apicast-staging.crt -trustcacerts -noprompt
-$ keytool -importcert -keystore /tmp/truststore.p12 -storepass 'P@ssw0rd' -alias apicast-production -file /tmp/apicast-production.crt -trustcacerts -noprompt
+keytool -importcert -keystore /tmp/truststore.p12 -storepass 'P@ssw0rd' -file /tmp/apicast.crt -trustcacerts -noprompt
+keytool -importcert -keystore /tmp/truststore.p12 -storepass 'P@ssw0rd' -alias apicast-staging -file /tmp/apicast-staging.crt -trustcacerts -noprompt
+keytool -importcert -keystore /tmp/truststore.p12 -storepass 'P@ssw0rd' -alias apicast-production -file /tmp/apicast-production.crt -trustcacerts -noprompt
 ```
 
 ## Running the application in dev mode
@@ -139,7 +139,7 @@ curl -k -vvv --cert /tmp/apicast.crt --key /tmp/apicast.key https://localhost:84
 1. If not already installed, install the Red Hat OpenShift distributed tracing platform (Jaeger) operator with an AllNamespaces scope.
 _**:warning: cluster-admin privileges are required**_
     ```
-    oc create --save-config -f - <<EOF
+    oc apply -f - <<EOF
     apiVersion: operators.coreos.com/v1alpha1
     kind: Subscription
     metadata:
