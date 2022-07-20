@@ -38,8 +38,19 @@ cp /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home/lib/secur
 keytool -storepasswd -keystore /tmp/truststore.p12 -storepass changeit -new 'P@ssw0rd'
 # Importing the client public certificate (client_cert) into the fruits-legumes-api truststore
 keytool -importcert -keystore /tmp/truststore.p12 -storepass 'P@ssw0rd' -file /tmp/apicast.crt -trustcacerts -noprompt
+# Importing the staging APIcast gateway public certificate into the fruits-legumes-api truststore
 keytool -importcert -keystore /tmp/truststore.p12 -storepass 'P@ssw0rd' -alias apicast-staging -file /tmp/apicast-staging.crt -trustcacerts -noprompt
+# Importing the production APIcast gateway public certificate into the fruits-legumes-api truststore
 keytool -importcert -keystore /tmp/truststore.p12 -storepass 'P@ssw0rd' -alias apicast-production -file /tmp/apicast-production.crt -trustcacerts -noprompt
+```
+
+#### :bulb: Example on how to obtain the APIcast gateways public certificates
+
+```zsh
+# staging APIcast gateway public certificate
+openssl s_client -showcerts -servername fruits-legumes-api-tls-staging.<OCP APPLICATIONS DOMAIN> -connect fruits-legumes-api-tls-staging.<OCP APPLICATIONS DOMAIN>:443
+# production APIcast gateway public certificate
+openssl s_client -showcerts -servername fruits-legumes-api-tls.<OCP APPLICATIONS DOMAIN> -connect fruits-legumes-api-tls.<OCP APPLICATIONS DOMAIN>:443
 ```
 
 ## Running the application in dev mode
