@@ -12,7 +12,7 @@ spec:
           <ACCESS TOKEN>
       name: Prometheus
       url: >-
-        https://thanos-querier-openshift-monitoring.apps.cluster-8wk5n.8wk5n.sandbox1235.opentlc.com
+        https://thanos-querier-openshift-monitoring.<OCP APPLICATIONS DOMAIN>
       jsonData:
         httpHeaderName1: Authorization
         timeInterval: 5s

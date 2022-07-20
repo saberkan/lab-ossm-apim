@@ -6,7 +6,7 @@ API_MANAGER_NS="3scale-lab-ossm-amp"
 ## Password for the master admin account (master)
 API_MASTER_PASSWORD="P!ssw0rd"
 ## OpenShift domain suffix
-OCP_DOMAIN="cluster-8wk5n.8wk5n.sandbox1235.opentlc.com"
+OCP_DOMAIN="<OCP DOMAIN>"
 ## OpenShift routes domain suffix
 OCP_WILDCARD_DOMAIN="apps.${OCP_DOMAIN}"
 ## Master API access token
