@@ -4,7 +4,7 @@
 ## Namespace for the self-managed Red Hat 3Scale APICast gateways
 APICAST_NS="3scale-lab-ossm-gw"
 ## RHPDS OpenShift domain suffix
-OCP_DOMAIN="cluster-8wk5n.8wk5n.sandbox1235.opentlc.com"
+OCP_DOMAIN="<OCP DOMAIN>"
 ## RHPDS OpenShift routes domain suffix
 OCP_WILDCARD_DOMAIN="apps.${OCP_DOMAIN}"
 ## Tenant API access token (apim-demo)
@@ -71,7 +71,7 @@ openssl req -newkey rsa:4096 -x509 -nodes -days 3650 \
   echo '[req]'; \
   echo 'distinguished_name=req'; \
   echo '[san]'; \
-  echo 'subjectAltName=DNS:apicast-apim-demo-tls-staging.svc,DNS:*.apps.cluster-8wk5n.8wk5n.sandbox1235.opentlc.com')
+  echo 'subjectAltName=DNS:apicast-apim-demo-tls-staging.svc,DNS:*.<OCP APPLICATIONS DOMAIN>')
 
 ## Generate a self-signed key pair for production
 openssl req -newkey rsa:4096 -x509 -nodes -days 3650 \
@@ -82,7 +82,7 @@ openssl req -newkey rsa:4096 -x509 -nodes -days 3650 \
   echo '[req]'; \
   echo 'distinguished_name=req'; \
   echo '[san]'; \
-  echo 'subjectAltName=DNS:apicast-apim-demo-tls-production.svc,DNS:*.apps.cluster-8wk5n.8wk5n.sandbox1235.opentlc.com')
+  echo 'subjectAltName=DNS:apicast-apim-demo-tls-production.svc,DNS:*.<OCP APPLICATIONS DOMAIN>')
 
 ## Create certificate secrets for TLS
 ### Used by the self-managed Staging APIcast
