@@ -1,12 +1,20 @@
 # fruits-legumes-api Project
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+This project leverages **Red Hat build of Quarkus 2.7.x**, the Supersonic Subatomic Java Framework. More specifically, the project is implemented using [**Red Hat Camel Extensions for Quarkus 2.7.x**](https://access.redhat.com/documentation/en-us/red_hat_integration/2022.q3/html/getting_started_with_camel_extensions_for_quarkus/index).
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+## Prerequisites
 
-## Generate Java Keystores
+- Maven 3.8.1+
+- JDK 17 installed with `JAVA_HOME` configured appropriately
+- A running [_Red Hat OpenShift_](https://access.redhat.com/documentation/en-us/openshift_container_platform) cluster
+- Eventually, a running [_Red Hat 3scale API Management_](https://access.redhat.com/documentation/en-us/red_hat_3scale_api_management) platform
 
-### Client key pair for upstream MTLS
+
+## Build and Deployment
+
+### 1. Generate Java Keystores
+
+#### Client key pair for upstream MTLS
 ```zsh
 # Generate a self-signed key pair for APICAST MTLS
 openssl req -newkey rsa:4096 -x509 -nodes -days 3650 \
@@ -19,7 +27,7 @@ openssl req -newkey rsa:4096 -x509 -nodes -days 3650 \
 -subj "/CN=apiconsumer.svc"
 ```
 
-### Keystore with auto-signed key pair (private/public keys)
+#### Keystore with auto-signed key pair (private/public keys)
 ```zsh
 #  Generating fruits-legumes-api client auto-signed key pair (private and public) keystore
 keytool -genkey -keypass 'P@ssw0rd' -storepass 'P@ssw0rd' -alias fruits-legumes-api -keyalg RSA \
@@ -30,7 +38,7 @@ keytool -genkey -keypass 'P@ssw0rd' -storepass 'P@ssw0rd' -alias fruits-legumes-
 keytool -export -alias fruits-legumes-api -keystore /tmp/keystore.p12 -file /tmp/fruits-legumes-api_cert -storepass 'P@ssw0rd' -v
 ```
 
-### Truststore
+#### Truststore
 
 ```zsh
 # Use the Java cacerts as the basis for the truststore
@@ -44,18 +52,16 @@ keytool -importcert -keystore /tmp/truststore.p12 -storepass 'P@ssw0rd' -alias a
 keytool -importcert -keystore /tmp/truststore.p12 -storepass 'P@ssw0rd' -alias apicast-production -file /tmp/apicast-production.crt -trustcacerts -noprompt
 ```
 
-#### :bulb: Example on how to obtain the APIcast gateways public certificates
-
+> :bulb: **Example on how to obtain the APIcast gateways public certificates:**
 ```zsh
 # staging APIcast gateway public certificate
 openssl s_client -showcerts -servername fruits-legumes-api-tls-staging.<OCP APPLICATIONS DOMAIN> -connect fruits-legumes-api-tls-staging.<OCP APPLICATIONS DOMAIN>:443
 # production APIcast gateway public certificate
 openssl s_client -showcerts -servername fruits-legumes-api-tls.<OCP APPLICATIONS DOMAIN> -connect fruits-legumes-api-tls.<OCP APPLICATIONS DOMAIN>:443
 ```
-
 with `<OCP APPLICATIONS DOMAIN>`: OCP applications domain. E.g.: `apps.cluster-tjldv.tjldv.sandbox661.opentlc.com`
 
-## Running the application in dev mode
+### 2. Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:
 ```shell script
@@ -64,7 +70,7 @@ You can run your application in dev mode that enables live coding using:
 
 > **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
 
-## Packaging and running the application
+### 3. Packaging and running the application
 
 The application can be packaged using:
 ```shell script
@@ -82,7 +88,7 @@ If you want to build an _über-jar_, execute the following command:
 
 The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
 
-## Creating a native executable
+### 4. Creating a native executable
 
 You can create a native executable using: 
 ```shell script
@@ -98,7 +104,7 @@ You can then execute your native executable with: `./target/fruits-legumes-api-1
 
 If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
 
-## Running Jaeger locally
+### 5. Running Jaeger locally
 
 [**Jaeger**](https://www.jaegertracing.io/), a distributed tracing system for observability ([_open tracing_](https://opentracing.io/)). :bulb: A simple way of starting a Jaeger tracing server is with `docker` or `podman`:
 1. Start the Jaeger tracing server:
@@ -110,7 +116,7 @@ If you want to learn more about building native executables, please consult http
     ```
 2. While the server is running, browse to http://localhost:16686 to view tracing events.
 
-## Test locally
+### 6. Test locally
 
 ```zsh
 curl -k -vvv --cert /tmp/apicast.crt --key /tmp/apicast.key https://localhost:8443/fruits
@@ -147,7 +153,7 @@ curl -k -vvv --cert /tmp/apicast.crt --key /tmp/apicast.key https://localhost:84
     ./mvnw clean package -Dquarkus.kubernetes.deploy=true
     ```
 
-## OpenTelemetry with Jaeger
+### OpenTelemetry with Jaeger
 
 1. If not already installed, install the Red Hat OpenShift distributed tracing platform (Jaeger) operator with an AllNamespaces scope.
 _**:warning: cluster-admin privileges are required**_
@@ -191,15 +197,14 @@ _**:warning: cluster-admin privileges are required**_
 
 - OpenShift ([guide](https://quarkus.io/guides/deploying-to-openshift)): Generate OpenShift resources from annotations
 - Camel Platform HTTP ([guide](https://access.redhat.com/documentation/en-us/red_hat_integration/2.latest/html/camel_extensions_for_quarkus_reference/extensions-platform-http)): Expose HTTP endpoints using the HTTP server available in the current platform
-- Camel Direct ([guide](https://access.redhat.com/documentation/en-us/red_hat_integration/2.latest/html/camel_extensions_for_quarkus_reference/extensions-direct)): Call another endpoint from the same Camel Context synchronously
+- Camel MicroProfile Health ([guide](https://access.redhat.com/documentation/en-us/red_hat_integration/2.latest/html/camel_extensions_for_quarkus_reference/extensions-microprofile-health)): Expose Camel health checks via MicroProfile Health
 - Camel MicroProfile Metrics ([guide](https://access.redhat.com/documentation/en-us/red_hat_integration/2.latest/html/camel_extensions_for_quarkus_reference/extensions-microprofile-metrics)): Expose metrics from Camel routes
-- Camel MicroProfile Health ([guide](https://access.redhat.com/documentation/en-us/red_hat_integration/2.latest/html/camel_extensions_for_quarkus_reference/extensions-microprofile-health)): Bridging Eclipse MicroProfile Health with Camel health checks
-- OpenTelemetry exporter: Jaeger ([guide](https://quarkus.io/guides/opentelemetry)): Enable Jaeger Exporter for OpenTelemetry
+- Camel Direct ([guide](https://access.redhat.com/documentation/en-us/red_hat_integration/2.latest/html/camel_extensions_for_quarkus_reference/extensions-direct)): Call another endpoint from the same Camel Context synchronously
 - Camel Jackson ([guide](https://access.redhat.com/documentation/en-us/red_hat_integration/2.latest/html/camel_extensions_for_quarkus_reference/extensions-jackson)): Marshal POJOs to JSON and back using Jackson
 - YAML Configuration ([guide](https://quarkus.io/guides/config#yaml)): Use YAML to configure your Quarkus application
 - RESTEasy JAX-RS ([guide](https://quarkus.io/guides/rest-json)): REST endpoint framework implementing JAX-RS and more
 - Kubernetes Config ([guide](https://quarkus.io/guides/kubernetes-config)): Read runtime configuration from Kubernetes ConfigMaps and Secrets
-- Camel OpenTelemetry ([guide](https://camel.apache.org/camel-quarkus/latest/reference/extensions/opentelemetry.html)): Distributed tracing using OpenTelemetry
+- Camel OpenTracing ([guide](https://camel.apache.org/camel-quarkus/latest/reference/extensions/opentracing.html)): Distributed tracing using OpenTracing
 - Camel Rest ([guide](https://access.redhat.com/documentation/en-us/red_hat_integration/2.latest/html/camel_extensions_for_quarkus_reference/extensions-rest)): Expose REST services and their OpenAPI Specification or call external REST services
 
 ## Provided Code
