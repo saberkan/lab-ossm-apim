@@ -18,12 +18,12 @@ This project leverages **Red Hat build of Quarkus 2.7.x**, the Supersonic Subato
 ```zsh
 # Generate a self-signed key pair for APICAST MTLS
 openssl req -newkey rsa:4096 -x509 -nodes -days 3650 \
--keyout /tmp/apicast.key -out /tmp/apicast.crt \
+-keyout ./tls-keys/apicast.key -out ./tls-keys/apicast.crt \
 -subj "/CN=apicast.svc"
 
 # Generate a self-signed key pair for API consumer
 openssl req -newkey rsa:4096 -x509 -nodes -days 3650 \
--keyout /tmp/apiconsumer.key -out /tmp/apiconsumer.crt \
+-keyout ./tls-keys/apiconsumer.key -out ./tls-keys/apiconsumer.crt \
 -subj "/CN=apiconsumer.svc"
 ```
 
@@ -32,24 +32,24 @@ openssl req -newkey rsa:4096 -x509 -nodes -days 3650 \
 #  Generating fruits-legumes-api client auto-signed key pair (private and public) keystore
 keytool -genkey -keypass 'P@ssw0rd' -storepass 'P@ssw0rd' -alias fruits-legumes-api -keyalg RSA \
 -dname 'CN=fruits-legumes-api' \
--validity 3600 -keystore /tmp/keystore.p12 -v \
+-validity 3600 -keystore ./tls-keys/keystore.p12 -v \
 -ext san=DNS:fruits-legumes-api.svc,DNS:fruits-legumes-api.svc.cluster.local,DNS:fruits-legumes-api.camel-quarkus.svc,DNS:fruits-legumes-api.camel-quarkus.svc.cluster.local
 # Exporting fruits-legumes-api public auto-signed certificate (api_cert)
-keytool -export -alias fruits-legumes-api -keystore /tmp/keystore.p12 -file /tmp/fruits-legumes-api_cert -storepass 'P@ssw0rd' -v
+keytool -export -alias fruits-legumes-api -keystore ./tls-keys/keystore.p12 -file ./tls-keys/fruits-legumes-api_cert -storepass 'P@ssw0rd' -v
 ```
 
 #### Truststore
 
 ```zsh
 # Use the Java cacerts as the basis for the truststore
-cp /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home/lib/security/cacerts /tmp/truststore.p12
-keytool -storepasswd -keystore /tmp/truststore.p12 -storepass changeit -new 'P@ssw0rd'
+cp /usr/local/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home/lib/security/cacerts ./tls-keys/truststore.p12
+keytool -storepasswd -keystore ./tls-keys/truststore.p12 -storepass changeit -new 'P@ssw0rd'
 # Importing the client public certificate (client_cert) into the fruits-legumes-api truststore
-keytool -importcert -keystore /tmp/truststore.p12 -storepass 'P@ssw0rd' -file /tmp/apicast.crt -trustcacerts -noprompt
+keytool -importcert -keystore ./tls-keys/truststore.p12 -storepass 'P@ssw0rd' -file ./tls-keys/apicast.crt -trustcacerts -noprompt
 # Importing the staging APIcast gateway public certificate into the fruits-legumes-api truststore
-keytool -importcert -keystore /tmp/truststore.p12 -storepass 'P@ssw0rd' -alias apicast-staging -file /tmp/apicast-staging.crt -trustcacerts -noprompt
+keytool -importcert -keystore ./tls-keys/truststore.p12 -storepass 'P@ssw0rd' -alias apicast-staging -file ./tls-keys/apicast-staging.crt -trustcacerts -noprompt
 # Importing the production APIcast gateway public certificate into the fruits-legumes-api truststore
-keytool -importcert -keystore /tmp/truststore.p12 -storepass 'P@ssw0rd' -alias apicast-production -file /tmp/apicast-production.crt -trustcacerts -noprompt
+keytool -importcert -keystore ./tls-keys/truststore.p12 -storepass 'P@ssw0rd' -alias apicast-production -file ./tls-keys/apicast-production.crt -trustcacerts -noprompt
 ```
 
 > :bulb: **Example on how to obtain the APIcast gateways public certificates:**
@@ -59,13 +59,13 @@ openssl s_client -showcerts -servername fruits-legumes-api-tls-staging.<OCP APPL
 # production APIcast gateway public certificate
 openssl s_client -showcerts -servername fruits-legumes-api-tls.<OCP APPLICATIONS DOMAIN> -connect fruits-legumes-api-tls.<OCP APPLICATIONS DOMAIN>:443
 ```
-with `<OCP APPLICATIONS DOMAIN>`: OCP applications domain. E.g.: `apps.cluster-tjldv.tjldv.sandbox661.opentlc.com`
+with `<OCP APPLICATIONS DOMAIN>`: OCP applications domain. E.g.: `apps.cluster-l5mt5.l5mt5.sandbox1873.opentlc.com`
 
 ### 2. Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:
 ```shell script
-./mvnw compile quarkus:dev
+./mvnw quarkus:dev
 ```
 
 > **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
@@ -119,7 +119,7 @@ If you want to learn more about building native executables, please consult http
 ### 6. Test locally
 
 ```zsh
-curl -k -vvv --cert /tmp/apicast.crt --key /tmp/apicast.key https://localhost:8443/fruits
+curl -k -vvv --cert ./tls-keys/apicast.crt --key ./tls-keys/apicast.key https://localhost:8443/fruits
 ```
 
 ## Deploy to OpenShift
@@ -131,21 +131,21 @@ curl -k -vvv --cert /tmp/apicast.crt --key /tmp/apicast.key https://localhost:84
 
 2. Create an OpenShift project to host the service
     ```zsh
-    oc new-project ceq-services --display-name="Red Hat CEQ Services"
+    oc new-project ceq-services-jvm --display-name="Red Hat Camel Extensions for Quarkus Apps - JVM Mode"
     ```
 
 3. Create secret containing the keystore
 
     ```zsh
     oc create secret generic keystore-secret \
-    --from-file=keystore.p12=/tmp/keystore.p12
+    --from-file=keystore.p12=./tls-keys/keystore.p12
     ```
 
 4. Create secret containing the truststore
 
     ```zsh
     oc create secret generic truststore-secret \
-    --from-file=truststore.p12=/tmp/truststore.p12
+    --from-file=truststore.p12=./tls-keys/truststore.p12
     ```
 
 5. Deploy the CEQ service
