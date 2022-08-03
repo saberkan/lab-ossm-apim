@@ -1,8 +1,8 @@
 # :bulb: Scripted 3scale APIM install - TO BE AUTOMATED
 
 1. Replace the `<OCP DOMAIN>` and `<OCP APPLICATIONS DOMAIN>` occurrences with your environment values:
-    - `<OCP DOMAIN>`: OCP domain. E.g.: `cluster-tjldv.tjldv.sandbox661.opentlc.com`
-    - `<OCP APPLICATIONS DOMAIN>`: OCP applications domain. E.g.: `apps.cluster-tjldv.tjldv.sandbox661.opentlc.com`
+    - `<OCP DOMAIN>`: OCP domain. E.g.: `cluster-l5mt5.l5mt5.sandbox1873.opentlc.com`
+    - `<OCP APPLICATIONS DOMAIN>`: OCP applications domain. E.g.: `apps.cluster-l5mt5.l5mt5.sandbox1873.opentlc.com`
 
 2. Run the provided scripts:
 
