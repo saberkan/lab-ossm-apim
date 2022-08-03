@@ -153,6 +153,32 @@ curl -k -vvv --cert ./tls-keys/apicast.crt --key ./tls-keys/apicast.key https://
     ./mvnw clean package -Dquarkus.kubernetes.deploy=true
     ```
 
+6. **OPTIONAL** - In order to test the service directly (without going through the _APICast gateway_), create a _passthrough_ OpenShift route:
+    ```shell script
+    oc apply -f - <<EOF
+    apiVersion: route.openshift.io/v1
+    kind: Route
+    metadata:
+        labels:
+            app.kubernetes.io/name: fruits-legumes-api
+            app.kubernetes.io/version: 1.0.0
+            app.openshift.io/runtime: quarkus
+        name: fruits-legumes-api-direct
+    spec:
+        host: fruits-legumes-api-direct.apps.cluster-l5mt5.l5mt5.sandbox1873.opentlc.com
+        port:
+            targetPort: https
+        tls:
+            insecureEdgeTerminationPolicy: Redirect
+            termination: passthrough
+        to:
+            kind: Service
+            name: fruits-legumes-api
+            weight: 100
+        wildcardPolicy: None
+    EOF
+    ```
+
 ### OpenTelemetry with Jaeger
 
 1. If not already installed, install the Red Hat OpenShift distributed tracing platform (Jaeger) operator with an AllNamespaces scope.
