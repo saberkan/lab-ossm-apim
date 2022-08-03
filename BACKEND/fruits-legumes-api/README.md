@@ -33,9 +33,9 @@ openssl req -newkey rsa:4096 -x509 -nodes -days 3650 \
 keytool -genkey -keypass 'P@ssw0rd' -storepass 'P@ssw0rd' -alias fruits-legumes-api -keyalg RSA \
 -dname 'CN=fruits-legumes-api' \
 -validity 3600 -keystore ./tls-keys/keystore.p12 -v \
--ext san=DNS:fruits-legumes-api.svc,DNS:fruits-legumes-api.svc.cluster.local,DNS:fruits-legumes-api.camel-quarkus.svc,DNS:fruits-legumes-api.camel-quarkus.svc.cluster.local
+-ext san=DNS:fruits-legumes-api.svc,DNS:fruits-legumes-api.svc.cluster.local,DNS:fruits-legumes-api.camel-quarkus.svc,DNS:fruits-legumes-api.camel-quarkus.svc.cluster.local,DNS:fruits-legumes-api.ceq-services-jvm.svc,DNS:fruits-legumes-api.ceq-services-jvm.svc.cluster.local
 # Exporting fruits-legumes-api public auto-signed certificate (api_cert)
-keytool -export -alias fruits-legumes-api -keystore ./tls-keys/keystore.p12 -file ./tls-keys/fruits-legumes-api_cert -storepass 'P@ssw0rd' -v
+keytool -exportcert -alias fruits-legumes-api -keystore ./tls-keys/keystore.p12 -file ./tls-keys/fruits-legumes-api.crt -storepass 'P@ssw0rd' -v -rfc
 ```
 
 #### Truststore
