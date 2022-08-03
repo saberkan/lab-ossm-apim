@@ -35,9 +35,9 @@ quarkus:
       client-auth: REQUIRED
       # Certificates
       certificate:
-        key-store-file: /tmp/keystore.p12
+        key-store-file: ./tls-keys/keystore.p12
         key-store-password: P@ssw0rd
-        trust-store-file: /tmp/truststore.p12
+        trust-store-file: ./tls-keys/truststore.p12
         trust-store-password: P@ssw0rd
 
   ## Quarkus OpenShift extension configuration
