@@ -6,8 +6,8 @@ This project leverages **Red Hat build of Quarkus 2.7.x**, the Supersonic Subato
 
 - Maven 3.8.1+
 - JDK 17 installed with `JAVA_HOME` configured appropriately
-- A running [_Red Hat OpenShift_](https://access.redhat.com/documentation/en-us/openshift_container_platform) cluster
-- Eventually, a running [_Red Hat 3scale API Management_](https://access.redhat.com/documentation/en-us/red_hat_3scale_api_management) platform
+- A running [_Red Hat OpenShift 4_](https://access.redhat.com/documentation/en-us/openshift_container_platform) cluster
+- Eventually, a running [_Red Hat 3scale API Management v2.12_](https://access.redhat.com/documentation/en-us/red_hat_3scale_api_management/2.12) platform and [_Red Hat SSO 7.6_](https://access.redhat.com/documentation/en-us/red_hat_single_sign-on/7.6) instance to secure the API.
 
 
 ## Build and Deployment
@@ -15,7 +15,7 @@ This project leverages **Red Hat build of Quarkus 2.7.x**, the Supersonic Subato
 ### 1. Generate Java Keystores
 
 #### Client key pair for upstream MTLS
-```zsh
+```script shell
 # Generate a self-signed key pair for APICAST MTLS
 openssl req -newkey rsa:4096 -x509 -nodes -days 3650 \
 -keyout ./tls-keys/apicast.key -out ./tls-keys/apicast.crt \
@@ -28,7 +28,7 @@ openssl req -newkey rsa:4096 -x509 -nodes -days 3650 \
 ```
 
 #### Keystore with auto-signed key pair (private/public keys)
-```zsh
+```script shell
 #  Generating fruits-legumes-api client auto-signed key pair (private and public) keystore
 keytool -genkey -keypass 'P@ssw0rd' -storepass 'P@ssw0rd' -alias fruits-legumes-api -keyalg RSA \
 -dname 'CN=fruits-legumes-api' \
@@ -40,7 +40,7 @@ keytool -export -alias fruits-legumes-api -keystore ./tls-keys/keystore.p12 -fil
 
 #### Truststore
 
-```zsh
+```script shell
 # Use the Java cacerts as the basis for the truststore
 cp /usr/local/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home/lib/security/cacerts ./tls-keys/truststore.p12
 keytool -storepasswd -keystore ./tls-keys/truststore.p12 -storepass changeit -new 'P@ssw0rd'
@@ -53,7 +53,7 @@ keytool -importcert -keystore ./tls-keys/truststore.p12 -storepass 'P@ssw0rd' -a
 ```
 
 > :bulb: **Example on how to obtain the APIcast gateways public certificates:**
-```zsh
+```script shell
 # staging APIcast gateway public certificate
 openssl s_client -showcerts -servername fruits-legumes-api-tls-staging.<OCP APPLICATIONS DOMAIN> -connect fruits-legumes-api-tls-staging.<OCP APPLICATIONS DOMAIN>:443
 # production APIcast gateway public certificate
@@ -118,38 +118,38 @@ If you want to learn more about building native executables, please consult http
 
 ### 6. Test locally
 
-```zsh
+```script shell
 curl -k -vvv --cert ./tls-keys/apicast.crt --key ./tls-keys/apicast.key https://localhost:8443/fruits
 ```
 
 ## Deploy to OpenShift
 
 1. Login to the OpenShift cluster
-    ```zsh
+    ```script shell
     oc login ...
     ```
 
 2. Create an OpenShift project to host the service
-    ```zsh
+    ```script shell
     oc new-project ceq-services-jvm --display-name="Red Hat Camel Extensions for Quarkus Apps - JVM Mode"
     ```
 
 3. Create secret containing the keystore
 
-    ```zsh
+    ```script shell
     oc create secret generic keystore-secret \
     --from-file=keystore.p12=./tls-keys/keystore.p12
     ```
 
 4. Create secret containing the truststore
 
-    ```zsh
+    ```script shell
     oc create secret generic truststore-secret \
     --from-file=truststore.p12=./tls-keys/truststore.p12
     ```
 
 5. Deploy the CEQ service
-    ```zsh
+    ```script shell
     ./mvnw clean package -Dquarkus.kubernetes.deploy=true
     ```
 
@@ -200,12 +200,12 @@ _**:warning: cluster-admin privileges are required**_
     ```
 
 2. Verify the successful installation of the Red Hat OpenShift distributed tracing platform operator
-    ```zsh
+    ```script shell
     watch oc get sub,csv
     ```
 
 3. Create the allInOne Jaeger instance in the dsna-pilot OpenShift project
-    ```zsh
+    ```script shell
     oc apply -f - <<EOF
     apiVersion: jaegertracing.io/v1
     kind: Jaeger
@@ -218,6 +218,26 @@ _**:warning: cluster-admin privileges are required**_
         strategy: allInOne
     EOF
     ```
+
+### How to secure the API using _Red Hat 3scale API Management_ and _Red Hat SSO 7_
+
+#### :bulb: Pre-requisite
+
+- [_3scale Toolbox_](https://access.redhat.com/documentation/en-us/red_hat_3scale_api_management/2.12/html/operating_3scale/the-threescale-toolbox#installing_the_toolbox_container_image) installed
+
+The following command line imports the API in _Red Hat 3scale API Management_ and secures it using OpenID Connect from the OpenAPI Specification. _Red Hat SSO 7_ is used as the OpenID Connect Authorization Server.
+
+> :bulb: **NOTE:** Adapt the values according to your environment.
+
+```script shell
+3scale import openapi \
+--override-private-base-url='https://fruits-legumes-api.ceq-services-jvm.svc:443' \
+--production-public-base-url='https://fruits-legumes-api.apps.cluster-l5mt5.l5mt5.sandbox1873.opentlc.com' \
+--staging-public-base-url='https://fruits-legumes-api-staging.apps.cluster-l5mt5.l5mt5.sandbox1873.opentlc.com' \
+--oidc-issuer-type=keycloak \
+--oidc-issuer-endpoint='https://rhpds-3scale-apim-demo-zync:FePg0fXDCqpm0EptPesoROh93AT9CwQB@sso.apps.cluster-l5mt5.l5mt5.sandbox1873.opentlc.com/auth/realms/openshift-cluster' \
+--verbose -d rhpds-apim-demo ./src/main/resources/openapi/openapi.json
+```
 
 ## Related Guides
 
